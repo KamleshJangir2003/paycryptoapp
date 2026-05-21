@@ -122,6 +122,9 @@
         <a href="{{ route('admin.support.index') }}" class="nav-link {{ request()->routeIs('admin.support.*') ? 'active' : '' }}">
             <i class="bi bi-headset"></i> Support Tickets
         </a>
+        <a href="{{ route('admin.chat.index') }}" class="nav-link {{ request()->routeIs('admin.chat.*') ? 'active' : '' }}">
+            <i class="bi bi-chat-dots-fill"></i> Live Chat
+        </a>
         <a href="{{ route('admin.payment.settings') }}" class="nav-link {{ request()->routeIs('admin.payment.*') ? 'active' : '' }}">
             <i class="bi bi-qr-code"></i> Payment Settings
         </a>

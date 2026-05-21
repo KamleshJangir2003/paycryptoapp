@@ -243,8 +243,11 @@
             <i class="bi bi-chevron-down arrow"></i>
         </button>
         <div class="nav-sub {{ $helpOpen ? 'open' : '' }}" id="helpSub">
+            <a href="{{ route('chat') }}" class="nav-link {{ request()->routeIs('chat') ? 'active' : '' }}">
+                <i class="bi bi-chat-dots-fill"></i> Support Chat
+            </a>
             <a href="{{ route('support.index') }}" class="nav-link {{ request()->routeIs('support.*') ? 'active' : '' }}">
-                <i class="bi bi-headset"></i> Support
+                <i class="bi bi-ticket-perforated"></i> Tickets
             </a>
             <a href="{{ route('faq') }}" class="nav-link {{ request()->routeIs('faq') ? 'active' : '' }}">
                 <i class="bi bi-patch-question-fill"></i> FAQ

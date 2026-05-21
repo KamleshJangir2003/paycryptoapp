@@ -48,6 +48,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/support', [SupportController::class, 'index'])->name('support.index');
     Route::get('/support/create', [SupportController::class, 'create'])->name('support.create');
     Route::post('/support', [SupportController::class, 'store'])->name('support.store');
+    Route::get('/chat', [\App\Http\Controllers\ChatController::class, 'index'])->name('chat');
+    Route::post('/chat/send', [\App\Http\Controllers\ChatController::class, 'send'])->name('chat.send');
+    Route::get('/chat/poll', [\App\Http\Controllers\ChatController::class, 'poll'])->name('chat.poll');
     Route::get('/faq', fn() => view('help.faq'))->name('faq');
     Route::get('/tutorial', fn() => view('help.tutorial'))->name('tutorial');
 
@@ -86,6 +89,10 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
     Route::get('/support', [\App\Http\Controllers\Admin\AdminSupportController::class, 'index'])->name('support.index');
     Route::post('/support/{ticket}/reply', [\App\Http\Controllers\Admin\AdminSupportController::class, 'reply'])->name('support.reply');
     Route::post('/support/{ticket}/close', [\App\Http\Controllers\Admin\AdminSupportController::class, 'close'])->name('support.close');
+    Route::get('/chat', [\App\Http\Controllers\Admin\AdminChatController::class, 'index'])->name('chat.index');
+    Route::get('/chat/{user}', [\App\Http\Controllers\Admin\AdminChatController::class, 'show'])->name('chat.show');
+    Route::post('/chat/{user}/send', [\App\Http\Controllers\Admin\AdminChatController::class, 'send'])->name('chat.send');
+    Route::get('/chat/{user}/poll', [\App\Http\Controllers\Admin\AdminChatController::class, 'poll'])->name('chat.poll');
 
     Route::post('/users/{user}/wallet-adjust', [\App\Http\Controllers\Admin\AdminWalletController::class, 'adjust'])->name('users.wallet.adjust');
 });

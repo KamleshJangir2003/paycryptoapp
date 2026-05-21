@@ -47,6 +47,7 @@ class User extends Authenticatable
     public function referrals() { return $this->hasMany(User::class, 'referred_by'); }
     public function performanceBonuses() { return $this->hasMany(PerformanceBonus::class); }
     public function securityHolds() { return $this->hasMany(SecurityHold::class); }
+    public function chatMessages() { return $this->hasMany(ChatMessage::class); }
 
     public function isAdmin() { return $this->role === 'admin'; }
 }
