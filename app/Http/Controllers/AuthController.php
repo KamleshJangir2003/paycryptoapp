@@ -83,9 +83,28 @@ class AuthController extends Controller
                 Auth::logout();
                 return back()->withErrors(['mobile' => 'Account is disabled']);
             }
+            if (Auth::user()->role === 'admin') {
+                Auth::logout();
+                return back()->withErrors(['mobile' => 'Use admin login panel']);
+            }
             return redirect()->intended(route('dashboard'));
         }
         return back()->withErrors(['mobile' => 'Invalid mobile or password']);
+    }
+
+    public function showAdminLogin() { return view('auth.admin-login'); }
+
+    public function adminLogin(Request $request)
+    {
+        $request->validate(['mobile' => 'required|digits:10', 'password' => 'required']);
+        if (Auth::attempt(['mobile' => $request->mobile, 'password' => $request->password])) {
+            if (Auth::user()->role !== 'admin') {
+                Auth::logout();
+                return back()->withErrors(['mobile' => 'Access denied. Admins only.']);
+            }
+            return redirect()->route('admin.dashboard');
+        }
+        return back()->withErrors(['mobile' => 'Invalid admin credentials']);
     }
 
     public function logout(Request $request)
