@@ -95,6 +95,7 @@
                     <div style="font-size:2rem; margin-bottom:8px;">💰</div>
                     <div style="color:#f0f0f0; font-weight:600; margin-bottom:4px;">Step 3: You Earn</div>
                     <div style="color:#7777aa; font-size:.85rem;">
+                        <span style="color:#f0a500; font-weight:700;">₹1000</span> on registration<br>
                         <span style="color:#4cdf80; font-weight:700;">1%</span> on their deposits<br>
                         <span style="color:#4cdf80; font-weight:700;">0.5%</span> on their withdrawals
                     </div>

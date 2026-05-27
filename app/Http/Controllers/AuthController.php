@@ -68,6 +68,20 @@ class AuthController extends Controller
             'is_verified' => true,
         ]);
 
+        // Referrer ko 1000 Rs reward
+        if ($referrer) {
+            $referrer->wallet->increment('earnings_balance', 1000);
+            $referrer->commissions()->create([
+                'from_user_id'       => $user->id,
+                'type'               => 'referral',
+                'transaction_amount' => 1000,
+                'commission_rate'    => 0,
+                'commission_amount'  => 1000,
+                'reference_id'       => $user->referral_code,
+                'status'             => 'credited',
+            ]);
+        }
+
         session()->forget(['reg_mobile', 'reg_otp', 'otp_expires', 'otp_verified', 'reg_ref']);
         Auth::login($user);
         return redirect()->route('dashboard');
