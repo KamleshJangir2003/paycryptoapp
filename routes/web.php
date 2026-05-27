@@ -13,8 +13,11 @@ use App\Http\Controllers\Admin\AdminWithdrawalController;
 use App\Http\Controllers\Admin\AdminUserController;
 
 // Auth Routes
+Route::get('/privacy-policy', fn() => view('privacy'))->name('privacy');
+Route::get('/terms-conditions', fn() => view('terms'))->name('terms');
+
 Route::middleware('guest')->group(function () {
-    Route::get('/', fn() => redirect()->route('login'));
+    Route::get('/', fn() => view('welcome'))->name('home');
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register/otp', [AuthController::class, 'sendOtp'])->name('register.otp');
     Route::get('/register/verify', [AuthController::class, 'showVerify'])->name('register.verify');
