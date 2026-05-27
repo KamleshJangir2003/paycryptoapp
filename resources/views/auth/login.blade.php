@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FastPayz - Login</title>
+    <title>FastpayoutX - Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <style>
@@ -31,7 +31,7 @@
 <body>
 <div class="auth-wrap">
     <div class="auth-card">
-        <div class="brand"><img src="{{ asset('logonew-removebg-preview.png') }}" alt="FastPayz" style="height:64px; width:auto;"></div>
+        <div class="brand"><img src="{{ asset('logonew-removebg-preview.png') }}" alt="FastpayoutX" style="height:64px; width:auto;"></div>
         <div class="subtitle">Login to your account</div>
 
         @if($errors->any())
