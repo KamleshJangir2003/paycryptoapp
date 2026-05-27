@@ -168,5 +168,6 @@ function openSidebar()  { document.getElementById('sidebar').classList.add('open
 function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
 function toggleDD(n) { document.getElementById(n+'Btn').classList.toggle('open'); document.getElementById(n+'Sub').classList.toggle('open'); }
 </script>
+@yield('scripts')
 </body>
 </html>
