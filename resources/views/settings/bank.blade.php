@@ -12,7 +12,7 @@
             <div style="background:#0d0d1a; border:1px solid #2a2a50; border-radius:10px; padding:14px; margin-bottom:20px;">
                 <div style="color:#7777aa; font-size:.85rem;">
                     <i class="bi bi-info-circle-fill me-2" style="color:#f0a500;"></i>
-                    Yeh details withdrawal ke time automatically fill ho jaati hain. Sahi details save karo taaki payment mein koi problem na ho.
+                    These details are automatically filled during withdrawal. Save the correct details to avoid any payment issues.
                 </div>
             </div>
 
@@ -52,7 +52,7 @@
                         value="{{ auth()->user()->bank_ifsc }}"
                         style="text-transform:uppercase;">
                     <div style="color:#5a5a80; font-size:.78rem; margin-top:4px;">
-                        <i class="bi bi-info-circle me-1"></i>11-character IFSC code (cheque book ya passbook pe milega)
+                        <i class="bi bi-info-circle me-1"></i>11-character IFSC code (found on your cheque book or passbook)
                     </div>
                 </div>
                 <div class="mb-4">
