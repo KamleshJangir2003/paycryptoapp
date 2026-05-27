@@ -228,20 +228,32 @@
 <div class="sidebar" id="sidebar">
     <div class="sidebar-brand"><img src="{{ asset('logonew-removebg-preview.png') }}" alt="FastPayz"></div>
     <nav>
+        @php $hasDeposit = auth()->user()->deposits()->where('status','approved')->exists(); @endphp
         <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
             <i class="bi bi-speedometer2"></i> Dashboard
         </a>
         <a href="{{ route('deposit.index') }}" class="nav-link {{ request()->routeIs('deposit.*') ? 'active' : '' }}">
             <i class="bi bi-arrow-down-circle-fill"></i> Deposit
         </a>
+
+        @if($hasDeposit)
         <a href="{{ route('withdrawal.index') }}" class="nav-link {{ request()->routeIs('withdrawal.*') ? 'active' : '' }}">
             <i class="bi bi-arrow-up-circle-fill"></i> Withdrawal
         </a>
         <a href="{{ route('referral') }}" class="nav-link {{ request()->routeIs('referral') ? 'active' : '' }}">
             <i class="bi bi-people-fill"></i> Referral
         </a>
+        @else
+        <span class="nav-link" style="opacity:.4; cursor:not-allowed;" title="Deposit karein to unlock">
+            <i class="bi bi-arrow-up-circle-fill"></i> Withdrawal <i class="bi bi-lock-fill ms-auto" style="font-size:.75rem;"></i>
+        </span>
+        <span class="nav-link" style="opacity:.4; cursor:not-allowed;" title="Deposit karein to unlock">
+            <i class="bi bi-people-fill"></i> Referral <i class="bi bi-lock-fill ms-auto" style="font-size:.75rem;"></i>
+        </span>
+        @endif
 
         {{-- Reports Dropdown --}}
+        @if($hasDeposit)
         @php $reportsOpen = request()->routeIs('reports*'); @endphp
         <button class="nav-dropdown-btn {{ $reportsOpen ? 'open' : '' }}" onclick="toggleDropdown('reports')" id="reportsBtn">
             <i class="bi bi-bar-chart-fill" style="font-size:1.1rem; width:20px;"></i>
@@ -256,6 +268,11 @@
                 <i class="bi bi-sliders"></i> Adjustment
             </a>
         </div>
+        @else
+        <span class="nav-link" style="opacity:.4; cursor:not-allowed;">
+            <i class="bi bi-bar-chart-fill"></i> Reports <i class="bi bi-lock-fill ms-auto" style="font-size:.75rem;"></i>
+        </span>
+        @endif
 
         {{-- Help Dropdown --}}
         @php $helpOpen = request()->routeIs('support.*') || request()->routeIs('faq') || request()->routeIs('tutorial'); @endphp
@@ -331,6 +348,9 @@
     <div class="page-body">
         @if(session('success'))
             <div class="alert alert-success mb-4"><i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}</div>
+        @endif
+        @if(session('warning'))
+            <div class="alert mb-4" style="background:#1a1200; border:1px solid #f0a500; color:#f0a500; border-radius:10px;"><i class="bi bi-exclamation-triangle-fill me-2"></i>{{ session('warning') }}</div>
         @endif
         @if(session('error'))
             <div class="alert alert-danger mb-4"><i class="bi bi-exclamation-circle-fill me-2"></i>{{ session('error') }}</div>

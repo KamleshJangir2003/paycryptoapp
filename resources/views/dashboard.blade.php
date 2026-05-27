@@ -2,6 +2,20 @@
 @section('title', 'Dashboard')
 @section('content')
 
+{{-- Deposit Required Banner --}}
+@php $hasDeposit = auth()->user()->deposits()->where('status','approved')->exists(); @endphp
+@unless($hasDeposit)
+<div class="alert mb-4" style="background:#1a0d00; border:1px solid #f0a500; color:#f0a500; border-radius:12px; padding:18px 22px;">
+    <div class="d-flex align-items-center gap-3">
+        <span style="font-size:2rem;">🔒</span>
+        <div>
+            <div style="font-weight:700; font-size:1rem;">Your Dashboard is Locked</div>
+            <div style="font-size:.88rem; color:#c0a060; margin-top:3px;">Make your first deposit to unlock full access — Withdrawal, Referral, Reports and more will be available once your deposit is approved.</div>
+        </div>
+        <a href="{{ route('deposit.create') }}" class="btn btn-primary ms-auto" style="white-space:nowrap;">Deposit Now</a>
+    </div>
+</div>
+@endunless
 {{-- Wallet Cards --}}
 <div class="row g-3 mb-4">
     <div class="col-6 col-md-3">

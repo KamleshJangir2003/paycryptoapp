@@ -2,6 +2,14 @@
 @section('title', 'New Deposit')
 @section('content')
 
+@php $hasDeposit = auth()->user()->deposits()->where('status','approved')->exists(); @endphp
+@unless($hasDeposit)
+<div class="alert mb-4" style="background:#0d1a2a; border:1px solid #4db8ff; color:#4db8ff; border-radius:12px; padding:16px 20px;">
+    <i class="bi bi-info-circle-fill me-2"></i>
+    <strong>One step away from full access!</strong> Complete your first deposit and once it is approved by our team, your entire dashboard will be unlocked — including Withdrawals, Referrals, and Reports.
+</div>
+@endunless
+
 <div class="row justify-content-center">
 <div class="col-12 col-md-8 col-lg-7">
 
