@@ -21,13 +21,12 @@
             overflow: hidden;
         }
         .sidebar-brand {
-            padding: 22px 20px;
-            font-size: 1.5rem; font-weight: 800;
-            color: #f0a500;
+            padding: 12px 16px;
             border-bottom: 1px solid #2a2a50;
-            letter-spacing: 1px;
+            display: flex; align-items: center; justify-content: center;
+            min-height: 90px;
         }
-        .sidebar-brand span { color: #ffffff; }
+        .sidebar-brand img { max-width: 200px; max-height: 70px; width: auto; height: 70px; object-fit: contain; display: block; }
         .sidebar nav { flex: 1; padding: 10px 0; overflow-y: auto; overflow-x: hidden; }
         .sidebar nav::-webkit-scrollbar { width: 4px; }
         .sidebar nav::-webkit-scrollbar-track { background: transparent; }
@@ -52,15 +51,33 @@
         .topbar {
             background: #13132b;
             border-bottom: 1px solid #2a2a50;
-            padding: 14px 28px;
-            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 20px;
+            display: flex; align-items: center; gap: 14px;
             position: sticky; top: 0; z-index: 100;
         }
-        .topbar-title { font-size: 1.2rem; font-weight: 700; color: #f0f0f0; }
-        .topbar-user { text-align: right; }
-        .topbar-user .name { color: #f0f0f0; font-weight: 600; font-size: .9rem; }
-        .topbar-user .mobile { color: #f0a500; font-size: .8rem; }
+        .topbar-logo { height: 44px; width: auto; object-fit: contain; flex-shrink: 0; }
+        .topbar-user-info { display: flex; flex-direction: column; justify-content: center; flex: 1; min-width: 0; }
+        .topbar-name { color: #f0f0f0; font-weight: 700; font-size: .95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .topbar-mobile { color: #f0a500; font-size: .78rem; white-space: nowrap; }
+        .hamburger { background: none; border: none; color: #f0f0f0; font-size: 1.6rem; cursor: pointer; flex-shrink: 0; padding: 0; line-height: 1; }
+        .topbar-title { font-size: 1.1rem; font-weight: 700; color: #f0f0f0; }
+        .topbar-user { text-align: right; flex-shrink: 0; }
+        .topbar-user .name { color: #f0f0f0; font-weight: 600; font-size: .85rem; }
+        .topbar-user .mobile { color: #f0a500; font-size: .75rem; }
         .page-body { padding: 24px 28px; }
+
+        @media (max-width: 768px) {
+            .main-content { margin-left: 0; }
+            .page-body { padding: 16px; }
+            .topbar { padding: 8px 14px; gap: 10px; }
+            .topbar-logo { height: 36px; }
+            .topbar-name { font-size: .85rem; }
+            .topbar-mobile { font-size: .72rem; }
+        }
+        @media (max-width: 480px) {
+            .topbar { padding: 8px 10px; gap: 8px; }
+            .topbar-logo { height: 30px; }
+        }
 
         /* ── Cards ── */
         .card { background: #13132b; border: 1px solid #2a2a50; border-radius: 14px; }
@@ -160,19 +177,19 @@
         .nav-sub .nav-link { padding: 9px 22px 9px 44px; font-size: .88rem; border-left: none; }
         .nav-sub .nav-link:hover { background: #1a1a38; border-left: none; }
         .nav-sub .nav-link.active { color: #f0a500 !important; background: #1a1a38; border-left: none; }
-        .hamburger { display: none; background: none; border: none; color: #f0f0f0; font-size: 1.5rem; cursor: pointer; }
+        .hamburger { background: none; border: none; color: #f0f0f0; font-size: 1.6rem; cursor: pointer; flex-shrink: 0; padding: 0; line-height: 1; }
+        .topbar-logo { height: 44px; width: auto; object-fit: contain; flex-shrink: 0; }
         .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 199; }
 
         /* ── Responsive ── */
+        @media (min-width: 769px) {
+            .hamburger { display: none; }
+        }
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.open { transform: translateX(0); }
             .sidebar-overlay.open { display: block; }
-            .main-content { margin-left: 0; }
-            .hamburger { display: block; }
-            .page-body { padding: 16px; }
             .stat-card .stat-value { font-size: 1.4rem; }
-            .topbar { padding: 12px 16px; }
         }
 
         /* ── Pagination ── */
@@ -209,7 +226,7 @@
 <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
 
 <div class="sidebar" id="sidebar">
-    <div class="sidebar-brand"><img src="{{ asset('logonew-removebg-preview.png') }}" alt="FastPayz" style="height:48px; width:auto;"></div>
+    <div class="sidebar-brand"><img src="{{ asset('logonew-removebg-preview.png') }}" alt="FastPayz"></div>
     <nav>
         <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
             <i class="bi bi-speedometer2"></i> Dashboard
@@ -294,13 +311,20 @@
 
 <div class="main-content">
     <div class="topbar">
-        <div class="d-flex align-items-center gap-3">
-            <button class="hamburger" onclick="openSidebar()"><i class="bi bi-list"></i></button>
-            <div class="topbar-title">@yield('title', 'Dashboard')</div>
+        <div class="d-flex align-items-center gap-3 d-md-none">
+            <img src="{{ asset('logonew-removebg-preview.png') }}" alt="FastPayz" class="topbar-logo">
+            <div class="topbar-user-info">
+                <div class="topbar-name">{{ auth()->user()->name }}</div>
+                <div class="topbar-mobile">{{ auth()->user()->mobile }}</div>
+            </div>
+            <button class="hamburger ms-auto" onclick="openSidebar()"><i class="bi bi-list"></i></button>
         </div>
-        <div class="topbar-user">
-            <div class="name">{{ auth()->user()->name }}</div>
-            <div class="mobile">{{ auth()->user()->mobile }}</div>
+        <div class="d-none d-md-flex align-items-center justify-content-between w-100">
+            <div class="topbar-title">@yield('title', 'Dashboard')</div>
+            <div class="topbar-user">
+                <div class="name">{{ auth()->user()->name }}</div>
+                <div class="mobile">{{ auth()->user()->mobile }}</div>
+            </div>
         </div>
     </div>
 
