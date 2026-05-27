@@ -29,7 +29,7 @@
 <body>
 <div class="auth-wrap">
     <div class="auth-card">
-        <div class="brand">⚡ Fast<span>Payz</span></div>
+        <div class="brand"><img src="{{ asset('logonew-removebg-preview.png') }}" alt="FastPayz" style="height:64px; width:auto;"></div>
         <div class="subtitle">Enter the OTP sent to your mobile</div>
 
         <div class="d-flex justify-content-center gap-2 mb-4">

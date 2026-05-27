@@ -9,10 +9,14 @@
     <style>
         * { box-sizing: border-box; }
         body { background: #0a0a14; color: #f0f0f0; font-family: 'Segoe UI', sans-serif; margin: 0; }
-        .sidebar { width: 240px; min-height: 100vh; background: #10102a; border-right: 1px solid #2a2a50; position: fixed; top: 0; left: 0; z-index: 200; display: flex; flex-direction: column; transition: transform .3s; }
+        .sidebar { width: 240px; height: 100vh; background: #10102a; border-right: 1px solid #2a2a50; position: fixed; top: 0; left: 0; z-index: 200; display: flex; flex-direction: column; transition: transform .3s; overflow: hidden; }
         .sidebar-brand { padding: 22px 20px; font-size: 1.3rem; font-weight: 800; color: #ff4d4d; border-bottom: 1px solid #2a2a50; }
         .sidebar-brand span { color: #ffffff; }
-        .sidebar nav { flex: 1; padding: 10px 0; }
+        .sidebar nav { flex: 1; padding: 10px 0; overflow-y: auto; overflow-x: hidden; }
+        .sidebar nav::-webkit-scrollbar { width: 4px; }
+        .sidebar nav::-webkit-scrollbar-track { background: transparent; }
+        .sidebar nav::-webkit-scrollbar-thumb { background: #2a2a50; border-radius: 4px; }
+        .sidebar nav::-webkit-scrollbar-thumb:hover { background: #ff4d4d; }
         .nav-link { color: #b0b0cc !important; padding: 12px 22px; display: flex; align-items: center; gap: 12px; font-size: .95rem; font-weight: 500; border-left: 3px solid transparent; transition: all .2s; text-decoration: none; }
         .nav-link i { font-size: 1.1rem; width: 20px; }
         .nav-link:hover { color: #f0f0f0 !important; background: #1e1e40; border-left-color: #ff4d4d; }
@@ -89,7 +93,7 @@
 <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
 
 <div class="sidebar" id="sidebar">
-    <div class="sidebar-brand">🛡️ Fast<span>Payz</span> Admin</div>
+    <div class="sidebar-brand"><img src="{{ asset('logonew-removebg-preview.png') }}" alt="FastPayz" style="height:48px; width:auto;"></div>
     <nav>
         <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
             <i class="bi bi-speedometer2"></i> Dashboard

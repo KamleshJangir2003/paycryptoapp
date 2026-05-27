@@ -12,12 +12,13 @@
 
         /* ── Sidebar ── */
         .sidebar {
-            width: 240px; min-height: 100vh;
+            width: 240px; height: 100vh;
             background: #13132b;
             border-right: 1px solid #2a2a50;
             position: fixed; top: 0; left: 0; z-index: 200;
             display: flex; flex-direction: column;
             transition: transform .3s;
+            overflow: hidden;
         }
         .sidebar-brand {
             padding: 22px 20px;
@@ -27,7 +28,11 @@
             letter-spacing: 1px;
         }
         .sidebar-brand span { color: #ffffff; }
-        .sidebar nav { flex: 1; padding: 10px 0; }
+        .sidebar nav { flex: 1; padding: 10px 0; overflow-y: auto; overflow-x: hidden; }
+        .sidebar nav::-webkit-scrollbar { width: 4px; }
+        .sidebar nav::-webkit-scrollbar-track { background: transparent; }
+        .sidebar nav::-webkit-scrollbar-thumb { background: #2a2a50; border-radius: 4px; }
+        .sidebar nav::-webkit-scrollbar-thumb:hover { background: #f0a500; }
         .nav-link {
             color: #b0b0cc !important;
             padding: 12px 22px;
@@ -204,7 +209,7 @@
 <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
 
 <div class="sidebar" id="sidebar">
-    <div class="sidebar-brand">⚡ Fast<span>Payz</span></div>
+    <div class="sidebar-brand"><img src="{{ asset('logonew-removebg-preview.png') }}" alt="FastPayz" style="height:48px; width:auto;"></div>
     <nav>
         <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
             <i class="bi bi-speedometer2"></i> Dashboard

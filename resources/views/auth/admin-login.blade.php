@@ -26,7 +26,7 @@
 <body>
 <div class="auth-wrap">
     <div class="auth-card">
-        <div class="brand">⚡ Fast<span>Payz</span></div>
+        <div class="brand"><img src="{{ asset('logonew-removebg-preview.png') }}" alt="FastPayz" style="height:64px; width:auto;"></div>
         <div class="text-center"><span class="badge-admin"><i class="bi bi-shield-lock me-1"></i>Admin Panel</span></div>
         <div class="subtitle">Admin access only</div>
 

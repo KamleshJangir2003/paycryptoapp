@@ -31,7 +31,7 @@
 <body>
 <div class="auth-wrap">
     <div class="auth-card">
-        <div class="brand">⚡ Fast<span>Payz</span></div>
+        <div class="brand"><img src="{{ asset('logonew-removebg-preview.png') }}" alt="FastPayz" style="height:64px; width:auto;"></div>
         <div class="subtitle">Login to your account</div>
 
         @if($errors->any())
