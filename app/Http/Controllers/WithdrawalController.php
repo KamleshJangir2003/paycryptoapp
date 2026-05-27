@@ -26,12 +26,13 @@ class WithdrawalController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'amount' => 'required|numeric|min:100',
-            'method' => 'required|in:upi,bank',
-            'upi_id' => 'required_if:method,upi|nullable|string',
-            'bank_account' => 'required_if:method,bank|nullable|string',
-            'bank_ifsc'    => 'required_if:method,bank|nullable|string',
-            'bank_name'    => 'required_if:method,bank|nullable|string',
+            'amount'        => 'required|numeric|min:100',
+            'method'        => 'required|in:upi,bank,qr',
+            'upi_id'        => 'required_if:method,upi|nullable|string',
+            'bank_account'  => 'required_if:method,bank|nullable|string',
+            'bank_ifsc'     => 'required_if:method,bank|nullable|string',
+            'bank_name'     => 'required_if:method,bank|nullable|string',
+            'qr_screenshot' => 'required_if:method,qr|nullable|image|max:2048',
         ]);
 
         $user = Auth::user()->load('wallet');
@@ -41,20 +42,26 @@ class WithdrawalController extends Controller
             return back()->withErrors(['amount' => 'Insufficient balance']);
         }
 
-        DB::transaction(function () use ($request, $user, $wallet) {
+        $screenshotPath = null;
+        if ($request->method === 'qr' && $request->hasFile('qr_screenshot')) {
+            $screenshotPath = $request->file('qr_screenshot')->store('withdrawals/qr', 'public');
+        }
+
+        DB::transaction(function () use ($request, $user, $wallet, $screenshotPath) {
             $wallet->decrement('main_balance', $request->amount);
             $wallet->increment('pending_balance', $request->amount);
 
             $withdrawal = Withdrawal::create([
-                'user_id'      => $user->id,
-                'amount'       => $request->amount,
-                'method'       => $request->method,
-                'upi_id'       => $request->upi_id,
-                'bank_account' => $request->bank_account,
-                'bank_ifsc'    => $request->bank_ifsc,
-                'bank_name'    => $request->bank_name,
-                'status'       => 'pending',
-                'in_pool'      => true,
+                'user_id'        => $user->id,
+                'amount'         => $request->amount,
+                'method'         => $request->method,
+                'upi_id'         => $request->upi_id,
+                'bank_account'   => $request->bank_account,
+                'bank_ifsc'      => $request->bank_ifsc,
+                'bank_name'      => $request->bank_name,
+                'qr_screenshot'  => $screenshotPath,
+                'status'         => 'pending',
+                'in_pool'        => true,
             ]);
 
             Transaction::create([

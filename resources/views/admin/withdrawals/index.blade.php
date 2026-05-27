@@ -34,10 +34,16 @@
                     <td>
                         <span class="badge bg-secondary mb-1">{{ strtoupper($w->method) }}</span><br>
                         <span style="color:#c0c0e0; font-size:.82rem; font-family:monospace;">
-                            {{ $w->method === 'upi' ? $w->upi_id : $w->bank_account }}
+                            {{ $w->method === 'upi' ? $w->upi_id : ($w->method === 'bank' ? $w->bank_account : '—') }}
                         </span>
                         @if($w->method === 'bank' && $w->bank_ifsc)
                         <br><span style="color:#7777aa; font-size:.78rem;">IFSC: {{ $w->bank_ifsc }}</span>
+                        @endif
+                        @if($w->method === 'qr' && $w->qr_screenshot)
+                        <br>
+                        <a href="{{ asset('storage/'.$w->qr_screenshot) }}" target="_blank">
+                            <img src="{{ asset('storage/'.$w->qr_screenshot) }}" style="width:60px; height:60px; object-fit:cover; border-radius:6px; border:1px solid #2a2a50; margin-top:4px;">
+                        </a>
                         @endif
                     </td>
                     <td style="color:#7777aa; font-size:.82rem;">{{ $w->created_at->diffForHumans() }}</td>
