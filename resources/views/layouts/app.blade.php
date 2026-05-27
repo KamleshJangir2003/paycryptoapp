@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FastPayz - @yield('title', 'Dashboard')</title>
+    <title>FastpayoutX - @yield('title', 'Dashboard')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <style>
@@ -226,7 +226,7 @@
 <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
 
 <div class="sidebar" id="sidebar">
-    <div class="sidebar-brand"><img src="{{ asset('logonew-removebg-preview.png') }}" alt="FastPayz"></div>
+    <div class="sidebar-brand"><img src="{{ asset('logonew-removebg-preview.png') }}" alt="FastpayoutX"></div>
     <nav>
         @php $hasDeposit = auth()->user()->deposits()->where('status','approved')->exists(); @endphp
         <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
@@ -329,7 +329,7 @@
 <div class="main-content">
     <div class="topbar">
         <div class="d-flex align-items-center gap-3 d-md-none">
-            <img src="{{ asset('logonew-removebg-preview.png') }}" alt="FastPayz" class="topbar-logo">
+            <img src="{{ asset('logonew-removebg-preview.png') }}" alt="FastpayoutX" class="topbar-logo">
             <div class="topbar-user-info">
                 <div class="topbar-name">{{ auth()->user()->name }}</div>
                 <div class="topbar-mobile">{{ auth()->user()->mobile }}</div>

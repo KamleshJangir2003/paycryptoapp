@@ -8,7 +8,7 @@
     <div style="background:#13132b; padding:14px 20px; border-bottom:1px solid #2a2a50; display:flex; align-items:center; gap:12px;">
         <div style="width:42px;height:42px;background:#f0a500;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">🛡️</div>
         <div>
-            <div style="color:#f0f0f0;font-weight:700;font-size:.95rem;">FastPayz Support</div>
+            <div style="color:#f0f0f0;font-weight:700;font-size:.95rem;">FastpayoutX Support</div>
             <div style="color:#4cdf80;font-size:.78rem;">● Online</div>
         </div>
     </div>
@@ -43,7 +43,7 @@
         <div style="display:flex;justify-content:flex-start;gap:8px;">
             <div style="width:30px;height:30px;background:#f0a500;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;margin-top:4px;">🛡️</div>
             <div style="max-width:70%;background:#1a1a38;border-radius:12px 12px 12px 2px;padding:10px 14px;">
-                <div style="color:#f0a500;font-size:.72rem;font-weight:700;margin-bottom:4px;">FastPayz Support</div>
+                <div style="color:#f0a500;font-size:.72rem;font-weight:700;margin-bottom:4px;">FastpayoutX Support</div>
                 @if($msg->attachment)
                     @if(in_array(pathinfo($msg->attachment,PATHINFO_EXTENSION),['jpg','jpeg','png','gif','webp']))
                         <img src="{{ asset('storage/'.$msg->attachment) }}" style="max-width:200px;border-radius:8px;display:block;margin-bottom:6px;">
@@ -172,7 +172,7 @@ function makeBubble(m){
 
     const bg = isUser ? '#005c4b' : '#1a1a38';
     const br = isUser ? '12px 12px 2px 12px' : '12px 12px 12px 2px';
-    const label = !isUser ? `<div style="color:#f0a500;font-size:.72rem;font-weight:700;margin-bottom:4px;">FastPayz Support</div>` : '';
+    const label = !isUser ? `<div style="color:#f0a500;font-size:.72rem;font-weight:700;margin-bottom:4px;">FastpayoutX Support</div>` : '';
     const tick  = isUser  ? `<i class="bi bi-check2-all" style="color:#4db8ff;font-size:.75rem;"></i>` : '';
 
     let content = '';
