@@ -97,6 +97,38 @@
         .orb2 { width: 300px; height: 300px; background: rgba(245,166,35,0.06); bottom: 10%; right: -5%; animation-delay: 3s; }
         .orb3 { width: 200px; height: 200px; background: rgba(255,209,102,0.05); top: 50%; left: 60%; animation-delay: 5s; }
 
+        /* Floating BG Icons */
+        .bg-icons { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+        .bg-icon {
+            position: absolute;
+            opacity: 0.045;
+            animation: floatIcon linear infinite;
+        }
+        .bg-icon svg { display: block; }
+        .bg-icon:nth-child(1)  { top: 8%;  left: 6%;   animation-duration: 14s; animation-delay: 0s;   }
+        .bg-icon:nth-child(2)  { top: 15%; right: 8%;  animation-duration: 18s; animation-delay: -4s;  }
+        .bg-icon:nth-child(3)  { top: 55%; left: 3%;   animation-duration: 16s; animation-delay: -7s;  }
+        .bg-icon:nth-child(4)  { top: 70%; right: 5%;  animation-duration: 20s; animation-delay: -2s;  }
+        .bg-icon:nth-child(5)  { top: 35%; left: 18%;  animation-duration: 22s; animation-delay: -9s;  }
+        .bg-icon:nth-child(6)  { top: 25%; right: 20%; animation-duration: 17s; animation-delay: -5s;  }
+        .bg-icon:nth-child(7)  { top: 80%; left: 25%;  animation-duration: 19s; animation-delay: -11s; }
+        .bg-icon:nth-child(8)  { top: 45%; right: 15%; animation-duration: 15s; animation-delay: -3s;  }
+        .bg-icon:nth-child(9)  { top: 60%; left: 45%;  animation-duration: 21s; animation-delay: -8s;  }
+        .bg-icon:nth-child(10) { top: 5%;  left: 50%;  animation-duration: 13s; animation-delay: -6s;  }
+
+        @keyframes floatIcon {
+            0%   { transform: translateY(0px)   rotate(0deg);   }
+            25%  { transform: translateY(-18px) rotate(5deg);   }
+            50%  { transform: translateY(-8px)  rotate(-3deg);  }
+            75%  { transform: translateY(-22px) rotate(4deg);   }
+            100% { transform: translateY(0px)   rotate(0deg);   }
+        }
+
+        @media (max-width: 768px) {
+            .bg-icon { opacity: 0.03; }
+            .bg-icon:nth-child(n+7) { display: none; }
+        }
+
         .hero-content { position: relative; z-index: 1; max-width: 800px; }
 
         .badge {
@@ -450,6 +482,108 @@
         <div class="orb orb1"></div>
         <div class="orb orb2"></div>
         <div class="orb orb3"></div>
+    </div>
+
+    <!-- Floating Background Icons -->
+    <div class="bg-icons">
+
+        <!-- 1. Coin / Rupee -->
+        <div class="bg-icon">
+            <svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="45" cy="45" r="42" stroke="#f5a623" stroke-width="3"/>
+                <circle cx="45" cy="45" r="34" stroke="#f5a623" stroke-width="1.5" stroke-dasharray="4 3"/>
+                <text x="45" y="52" text-anchor="middle" font-size="26" font-weight="800" fill="#f5a623" font-family="Arial">₹</text>
+            </svg>
+        </div>
+
+        <!-- 2. Wallet -->
+        <div class="bg-icon">
+            <svg width="80" height="70" viewBox="0 0 80 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="18" width="76" height="48" rx="8" stroke="#f5a623" stroke-width="3"/>
+                <path d="M2 30 Q10 18 20 18 H70" stroke="#f5a623" stroke-width="2"/>
+                <rect x="52" y="36" width="22" height="14" rx="4" stroke="#f5a623" stroke-width="2.5"/>
+                <circle cx="63" cy="43" r="3" fill="#f5a623"/>
+                <path d="M14 10 Q14 2 22 2 H58 Q66 2 66 10 V18 H14 Z" stroke="#f5a623" stroke-width="2" fill="none"/>
+            </svg>
+        </div>
+
+        <!-- 3. Shield / Security -->
+        <div class="bg-icon">
+            <svg width="72" height="82" viewBox="0 0 72 82" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M36 4 L66 16 V38 C66 56 52 70 36 78 C20 70 6 56 6 38 V16 Z" stroke="#f5a623" stroke-width="3" fill="none"/>
+                <path d="M22 40 L31 50 L50 30" stroke="#f5a623" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+
+        <!-- 4. Bar Chart -->
+        <div class="bg-icon">
+            <svg width="80" height="75" viewBox="0 0 80 75" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="6"  y="40" width="14" height="28" rx="3" stroke="#f5a623" stroke-width="2.5"/>
+                <rect x="26" y="24" width="14" height="44" rx="3" stroke="#f5a623" stroke-width="2.5"/>
+                <rect x="46" y="10" width="14" height="58" rx="3" stroke="#f5a623" stroke-width="2.5"/>
+                <line x1="2" y1="72" x2="78" y2="72" stroke="#f5a623" stroke-width="2.5" stroke-linecap="round"/>
+                <polyline points="6,52 26,36 46,22 66,8" stroke="#ffd166" stroke-width="2" stroke-dasharray="4 3" fill="none"/>
+            </svg>
+        </div>
+
+        <!-- 5. Lightning bolt -->
+        <div class="bg-icon">
+            <svg width="55" height="85" viewBox="0 0 55 85" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="32,2 4,46 26,46 22,83 52,36 28,36" stroke="#f5a623" stroke-width="3" fill="none" stroke-linejoin="round"/>
+            </svg>
+        </div>
+
+        <!-- 6. Credit Card -->
+        <div class="bg-icon">
+            <svg width="90" height="62" viewBox="0 0 90 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="86" height="58" rx="8" stroke="#f5a623" stroke-width="3"/>
+                <line x1="2" y1="18" x2="88" y2="18" stroke="#f5a623" stroke-width="3"/>
+                <rect x="10" y="28" width="22" height="10" rx="3" stroke="#f5a623" stroke-width="2"/>
+                <circle cx="72" cy="44" r="7" stroke="#f5a623" stroke-width="2"/>
+                <circle cx="62" cy="44" r="7" stroke="#ffd166" stroke-width="2"/>
+            </svg>
+        </div>
+
+        <!-- 7. Arrow up (growth) -->
+        <div class="bg-icon">
+            <svg width="65" height="65" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="32" r="30" stroke="#f5a623" stroke-width="2.5"/>
+                <polyline points="20,44 32,20 44,44" stroke="#f5a623" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                <line x1="32" y1="20" x2="32" y2="48" stroke="#f5a623" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+        </div>
+
+        <!-- 8. Dollar / Exchange -->
+        <div class="bg-icon">
+            <svg width="75" height="75" viewBox="0 0 75 75" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="37" cy="37" r="34" stroke="#f5a623" stroke-width="2.5"/>
+                <path d="M37 16 V22 M37 53 V59" stroke="#f5a623" stroke-width="3" stroke-linecap="round"/>
+                <path d="M27 28 Q27 22 37 22 Q47 22 47 30 Q47 38 37 38 Q47 38 47 46 Q47 54 37 54 Q27 54 27 48" stroke="#f5a623" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            </svg>
+        </div>
+
+        <!-- 9. Network / Referral nodes -->
+        <div class="bg-icon">
+            <svg width="85" height="75" viewBox="0 0 85 75" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="42" cy="14" r="10" stroke="#f5a623" stroke-width="2.5"/>
+                <circle cx="14" cy="60" r="10" stroke="#f5a623" stroke-width="2.5"/>
+                <circle cx="70" cy="60" r="10" stroke="#f5a623" stroke-width="2.5"/>
+                <line x1="42" y1="24" x2="20" y2="51" stroke="#f5a623" stroke-width="2" stroke-dasharray="4 3"/>
+                <line x1="42" y1="24" x2="64" y2="51" stroke="#f5a623" stroke-width="2" stroke-dasharray="4 3"/>
+                <line x1="24" y1="60" x2="60" y2="60" stroke="#ffd166" stroke-width="1.5" stroke-dasharray="4 3"/>
+            </svg>
+        </div>
+
+        <!-- 10. Lock -->
+        <div class="bg-icon">
+            <svg width="62" height="78" viewBox="0 0 62 78" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="4" y="34" width="54" height="40" rx="8" stroke="#f5a623" stroke-width="3"/>
+                <path d="M14 34 V22 C14 10 48 10 48 22 V34" stroke="#f5a623" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <circle cx="31" cy="52" r="6" stroke="#f5a623" stroke-width="2.5"/>
+                <line x1="31" y1="58" x2="31" y2="66" stroke="#f5a623" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+        </div>
+
     </div>
     <div class="hero-content">
         <div class="badge">
