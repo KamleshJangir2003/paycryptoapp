@@ -31,6 +31,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+Route::post('/admin/logout', [AuthController::class, 'adminLogout'])->name('admin.logout')->middleware('auth:admin');
 
 // User Routes
 Route::middleware(['auth', 'deposit.check'])->group(function () {
@@ -68,7 +69,7 @@ Route::middleware(['auth', 'deposit.check'])->group(function () {
 });
 
 // Admin Routes
-Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
+Route::middleware(['auth:admin', \App\Http\Middleware\AdminMiddleware::class])
     ->prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');

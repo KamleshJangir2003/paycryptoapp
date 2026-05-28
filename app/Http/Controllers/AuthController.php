@@ -110,15 +110,18 @@ class AuthController extends Controller
 
     public function adminLogin(Request $request)
     {
-        $request->validate(['mobile' => 'required|digits:10', 'password' => 'required']);
-        if (Auth::attempt(['mobile' => $request->mobile, 'password' => $request->password])) {
-            if (Auth::user()->role !== 'admin') {
-                Auth::logout();
-                return back()->withErrors(['mobile' => 'Access denied. Admins only.']);
-            }
+        $request->validate(['email' => 'required|email', 'password' => 'required']);
+        if (auth('admin')->attempt(['email' => $request->email, 'password' => $request->password])) {
             return redirect()->route('admin.dashboard');
         }
-        return back()->withErrors(['mobile' => 'Invalid admin credentials']);
+        return back()->withErrors(['email' => 'Invalid admin credentials']);
+    }
+
+    public function adminLogout(Request $request)
+    {
+        auth('admin')->logout();
+        $request->session()->invalidate();
+        return redirect()->route('admin.login');
     }
 
     public function logout(Request $request)
