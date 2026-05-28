@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OtpMail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -17,11 +19,12 @@ class AuthController extends Controller
 
     public function sendOtp(Request $request)
     {
-        $request->validate(['mobile' => 'required|digits:10|unique:users,mobile']);
+        $request->validate(['email' => 'required|email|unique:users,email']);
         $otp = rand(100000, 999999);
-        session(['reg_mobile' => $request->mobile, 'reg_otp' => $otp, 'otp_expires' => now()->addMinutes(5)]);
+        session(['reg_email' => $request->email, 'reg_otp' => $otp, 'otp_expires' => now()->addMinutes(5)]);
         if ($request->ref_code) session(['reg_ref' => $request->ref_code]);
-        return redirect()->route('register.verify')->with('dev_otp', $otp);
+        Mail::to($request->email)->send(new OtpMail($otp));
+        return redirect()->route('register.verify');
     }
 
     public function showVerify() { return view('auth.verify'); }
@@ -62,7 +65,7 @@ class AuthController extends Controller
 
         $user = User::create([
             'name'        => $request->name,
-            'mobile'      => session('reg_mobile'),
+            'email'       => session('reg_email'),
             'password'    => Hash::make($request->password),
             'referred_by' => $referrer?->id,
             'is_verified' => true,
@@ -82,7 +85,7 @@ class AuthController extends Controller
             ]);
         }
 
-        session()->forget(['reg_mobile', 'reg_otp', 'otp_expires', 'otp_verified', 'reg_ref']);
+        session()->forget(['reg_email', 'reg_otp', 'otp_expires', 'otp_verified', 'reg_ref']);
         Auth::login($user);
         return redirect()->route('dashboard');
     }
@@ -91,15 +94,15 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $request->validate(['mobile' => 'required|digits:10', 'password' => 'required']);
-        if (Auth::attempt(['mobile' => $request->mobile, 'password' => $request->password], $request->remember)) {
+        $request->validate(['email' => 'required|email', 'password' => 'required']);
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
             if (!Auth::user()->is_active) {
                 Auth::logout();
-                return back()->withErrors(['mobile' => 'Account is disabled']);
+                return back()->withErrors(['email' => 'Account is disabled']);
             }
             return redirect()->intended(route('dashboard'));
         }
-        return back()->withErrors(['mobile' => 'Invalid mobile or password']);
+        return back()->withErrors(['email' => 'Invalid email or password']);
     }
 
     public function showAdminLogin() { return view('auth.admin-login'); }

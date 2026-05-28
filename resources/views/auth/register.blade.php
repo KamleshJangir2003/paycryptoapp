@@ -50,8 +50,8 @@
             @csrf
             <input type="hidden" name="ref_code" value="{{ $refCode ?? '' }}">
             <div class="mb-4">
-                <label class="form-label">Mobile Number</label>
-                <input type="text" name="mobile" class="form-control" placeholder="Enter 10-digit mobile number" maxlength="10" value="{{ old('mobile') }}" required>
+                <label class="form-label">Email Address</label>
+                <input type="email" name="email" class="form-control" placeholder="Enter your email address" value="{{ old('email') }}" required>
             </div>
             <button type="submit" class="btn btn-primary">Send OTP <i class="bi bi-arrow-right ms-1"></i></button>
         </form>

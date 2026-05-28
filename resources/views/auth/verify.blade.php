@@ -30,7 +30,7 @@
 <div class="auth-wrap">
     <div class="auth-card">
         <div class="brand"><img src="{{ asset('logonew-removebg-preview.png') }}" alt="FastpayoutX" style="height:64px; width:auto;"></div>
-        <div class="subtitle">Enter the OTP sent to your mobile</div>
+        <div class="subtitle">Enter the OTP sent to your email</div>
 
         <div class="d-flex justify-content-center gap-2 mb-4">
             <span style="color:#5a5a80; font-size:.8rem;">① Mobile</span>
@@ -39,13 +39,6 @@
             <span style="color:#3a3a60;">→</span>
             <span style="color:#5a5a80; font-size:.8rem;">③ Details</span>
         </div>
-
-        @if(session('dev_otp'))
-            <div class="alert-success-dev">
-                <i class="bi bi-info-circle-fill me-2"></i>
-                <strong>Dev Mode OTP:</strong> <span style="font-size:1.2rem; font-weight:800; letter-spacing:4px;">{{ session('dev_otp') }}</span>
-            </div>
-        @endif
 
         @if($errors->any())
             <div class="alert alert-danger mb-3">
@@ -64,7 +57,7 @@
 
         <hr class="divider">
         <p class="text-center mb-0" style="color:#7777aa; font-size:.9rem;">
-            <a href="{{ route('register') }}"><i class="bi bi-arrow-left me-1"></i>Change Number</a>
+            <a href="{{ route('register') }}"><i class="bi bi-arrow-left me-1"></i>Change Email</a>
         </p>
     </div>
 </div>

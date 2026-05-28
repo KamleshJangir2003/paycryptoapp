@@ -43,8 +43,8 @@
         <form method="POST" action="{{ route('login.post') }}">
             @csrf
             <div class="mb-3">
-                <label class="form-label">Mobile Number</label>
-                <input type="text" name="mobile" class="form-control" placeholder="Enter 10-digit mobile" maxlength="10" value="{{ old('mobile') }}" required>
+                <label class="form-label">Email Address</label>
+                <input type="email" name="email" class="form-control" placeholder="Enter your email" value="{{ old('email') }}" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Password</label>
