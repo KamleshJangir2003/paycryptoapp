@@ -133,7 +133,7 @@
             <i class="bi bi-qr-code"></i> Payment Settings
         </a>
         <hr class="sidebar-divider">
-        <form method="POST" action="{{ route('logout') }}">
+        <form method="POST" action="{{ route('admin.logout') }}">
             @csrf
             <button type="submit" class="nav-link w-100 border-0 bg-transparent text-start" style="cursor:pointer;">
                 <i class="bi bi-box-arrow-left"></i> Logout
@@ -148,7 +148,7 @@
             <button class="hamburger" onclick="openSidebar()"><i class="bi bi-list"></i></button>
             <div class="topbar-title">@yield('title')</div>
         </div>
-        <small style="color:#7777aa;">Admin: <span style="color:#ff4d4d;">{{ auth()->user()->name }}</span></small>
+        <small style="color:#7777aa;">Admin: <span style="color:#ff4d4d;">{{ auth('admin')->user()->name }}</span></small>
     </div>
 
     <div class="page-body">
