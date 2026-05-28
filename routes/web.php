@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 Route::get('/privacy-policy', fn() => view('privacy'))->name('privacy');
 Route::get('/terms-conditions', fn() => view('terms'))->name('terms');
 
+// User guest routes
 Route::middleware('guest')->group(function () {
     Route::get('/', fn() => view('welcome'))->name('home');
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
@@ -26,6 +27,10 @@ Route::middleware('guest')->group(function () {
     Route::post('/register/complete', [AuthController::class, 'completeRegister'])->name('register.complete.post');
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+});
+
+// Admin guest routes (separate - admin guard check)
+Route::middleware('guest:admin')->group(function () {
     Route::get('/admin/login', [AuthController::class, 'showAdminLogin'])->name('admin.login');
     Route::post('/admin/login', [AuthController::class, 'adminLogin'])->name('admin.login.post');
 });

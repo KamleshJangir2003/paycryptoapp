@@ -97,10 +97,6 @@ class AuthController extends Controller
                 Auth::logout();
                 return back()->withErrors(['mobile' => 'Account is disabled']);
             }
-            if (Auth::user()->role === 'admin') {
-                Auth::logout();
-                return back()->withErrors(['mobile' => 'Use admin login panel']);
-            }
             return redirect()->intended(route('dashboard'));
         }
         return back()->withErrors(['mobile' => 'Invalid mobile or password']);

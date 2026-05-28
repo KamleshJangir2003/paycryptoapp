@@ -11,6 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->redirectGuestsTo(fn($request) => route('login'));
+        $middleware->redirectUsersTo(function ($request) {
+            if (auth('admin')->check()) return route('admin.dashboard');
+            return route('dashboard');
+        });
         $middleware->alias([
             'admin'         => \App\Http\Middleware\AdminMiddleware::class,
             'deposit.check' => \App\Http\Middleware\CheckDepositDone::class,
