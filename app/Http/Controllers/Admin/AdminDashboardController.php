@@ -9,7 +9,7 @@ class AdminDashboardController extends Controller
 {
     public function index()
     {
-        $usdtRate = PaymentSetting::get()->usdt_rate ?? 85.00;
+        $usdtRate = (float) (PaymentSetting::get()->usdt_rate ?: 85.00);
 
         $stats = [
             'total_users'          => User::count(),

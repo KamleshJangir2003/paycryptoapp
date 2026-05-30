@@ -21,7 +21,7 @@ class WithdrawalController extends Controller
     public function create()
     {
         $user     = Auth::user()->load('wallet');
-        $usdtRate = PaymentSetting::get()->usdt_rate ?? 85.00;
+        $usdtRate = (float) (PaymentSetting::get()->usdt_rate ?: 85.00);
         return view('withdrawal.create', compact('user', 'usdtRate'));
     }
 

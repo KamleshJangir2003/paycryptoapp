@@ -19,7 +19,7 @@ class DashboardController extends Controller
         $todayVolume = $user->deposits()->where('status', 'approved')->whereDate('created_at', today())->sum('amount')
                      + $user->withdrawals()->where('status', 'completed')->whereDate('created_at', today())->sum('amount');
         $performanceTarget = 10000;
-        $usdtRate = PaymentSetting::get()->usdt_rate ?? 85.00;
+        $usdtRate = (float) (PaymentSetting::get()->usdt_rate ?: 85.00);
         return view('dashboard', compact('user', 'recentTransactions', 'referralCount', 'todayVolume', 'performanceTarget', 'usdtRate'));
     }
 }

@@ -18,7 +18,7 @@ class DepositController extends Controller
     public function create()
     {
         $payment = PaymentSetting::get();
-        $usdtRate = $payment->usdt_rate ?? 85.00;
+        $usdtRate = (float) ($payment->usdt_rate ?: 85.00);
         return view('deposit.create', compact('payment', 'usdtRate'));
     }
 
@@ -33,7 +33,7 @@ class DepositController extends Controller
         ]);
 
         $payment  = PaymentSetting::get();
-        $usdtRate = $payment->usdt_rate ?? 85.00;
+        $usdtRate = (float) ($payment->usdt_rate ?: 85.00);
 
         // If USDT deposit: amount field = USDT amount, convert to INR
         if ($request->payment_type === 'usdt') {
