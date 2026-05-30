@@ -51,31 +51,57 @@
         .topbar {
             background: #13132b;
             border-bottom: 1px solid #2a2a50;
-            padding: 10px 20px;
-            display: flex; align-items: center; gap: 14px;
+            padding: 0 24px;
+            height: 64px;
+            display: flex; align-items: center;
             position: sticky; top: 0; z-index: 100;
+            gap: 16px;
         }
-        .topbar-logo { height: 44px; width: auto; object-fit: contain; flex-shrink: 0; }
+        .topbar-logo { height: 40px; width: auto; object-fit: contain; flex-shrink: 0; }
         .topbar-user-info { display: flex; flex-direction: column; justify-content: center; flex: 1; min-width: 0; }
         .topbar-name { color: #f0f0f0; font-weight: 700; font-size: .95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .topbar-mobile { color: #f0a500; font-size: .78rem; white-space: nowrap; }
         .hamburger { background: none; border: none; color: #f0f0f0; font-size: 1.6rem; cursor: pointer; flex-shrink: 0; padding: 0; line-height: 1; }
-        .topbar-title { font-size: 1.1rem; font-weight: 700; color: #f0f0f0; }
-        .topbar-user { text-align: right; flex-shrink: 0; }
-        .topbar-user .name { color: #f0f0f0; font-weight: 600; font-size: .85rem; }
-        .topbar-user .mobile { color: #f0a500; font-size: .75rem; }
+        .topbar-title {
+            font-size: 1.05rem; font-weight: 700; color: #f0f0f0;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .topbar-title::before {
+            content: ''; display: inline-block;
+            width: 3px; height: 18px;
+            background: #f0a500; border-radius: 2px;
+        }
+        .topbar-right { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+        .topbar-balance {
+            background: #0d0d1a; border: 1px solid #2a2a50;
+            border-radius: 10px; padding: 6px 14px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .topbar-balance .bal-label { color: #7777aa; font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .4px; }
+        .topbar-balance .bal-value { color: #4cdf80; font-size: .95rem; font-weight: 800; line-height: 1; }
+        .topbar-avatar {
+            width: 38px; height: 38px; border-radius: 50%;
+            background: linear-gradient(135deg, #f0a500, #d4920a);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: .95rem; color: #000;
+            flex-shrink: 0;
+            border: 2px solid #2a2a50;
+        }
+        .topbar-user-detail { display: flex; flex-direction: column; align-items: flex-end; }
+        .topbar-user-detail .t-name { color: #f0f0f0; font-weight: 600; font-size: .85rem; line-height: 1.2; }
+        .topbar-user-detail .t-mobile { color: #f0a500; font-size: .72rem; }
         .page-body { padding: 24px 28px; }
 
         @media (max-width: 768px) {
             .main-content { margin-left: 0; }
             .page-body { padding: 16px; }
-            .topbar { padding: 8px 14px; gap: 10px; }
-            .topbar-logo { height: 36px; }
+            .topbar { padding: 0 14px; height: 58px; gap: 10px; }
+            .topbar-logo { height: 34px; }
             .topbar-name { font-size: .85rem; }
             .topbar-mobile { font-size: .72rem; }
         }
         @media (max-width: 480px) {
-            .topbar { padding: 8px 10px; gap: 8px; }
+            .topbar { padding: 0 10px; gap: 8px; }
             .topbar-logo { height: 30px; }
         }
 
@@ -327,20 +353,35 @@
 </div>
 
 <div class="main-content">
+    @php $topbarUser = auth()->user(); $topbarWallet = $topbarUser->wallet; @endphp
     <div class="topbar">
-        <div class="d-flex align-items-center gap-3 d-md-none">
+        {{-- Mobile --}}
+        <div class="d-flex align-items-center gap-3 d-md-none w-100">
             <img src="{{ asset('logonew-removebg-preview.png') }}" alt="FastpayoutX" class="topbar-logo">
             <div class="topbar-user-info">
-                <div class="topbar-name">{{ auth()->user()->name }}</div>
-                <div class="topbar-mobile">{{ auth()->user()->mobile }}</div>
+                <div class="topbar-name">{{ $topbarUser->name }}</div>
+                <div class="topbar-mobile">{{ $topbarUser->mobile }}</div>
             </div>
             <button class="hamburger ms-auto" onclick="openSidebar()"><i class="bi bi-list"></i></button>
         </div>
-        <div class="d-none d-md-flex align-items-center justify-content-between w-100">
+        {{-- Desktop --}}
+        <div class="d-none d-md-flex align-items-center w-100">
             <div class="topbar-title">@yield('title', 'Dashboard')</div>
-            <div class="topbar-user">
-                <div class="name">{{ auth()->user()->name }}</div>
-                <div class="mobile">{{ auth()->user()->mobile }}</div>
+            <div class="topbar-right">
+                @if($topbarWallet)
+                <div class="topbar-balance">
+                    <i class="bi bi-wallet2" style="color:#4cdf80; font-size:.9rem;"></i>
+                    <div>
+                        <div class="bal-label">Balance</div>
+                        <div class="bal-value">₹{{ number_format($topbarWallet->main_balance, 2) }}</div>
+                    </div>
+                </div>
+                @endif
+                <div class="topbar-user-detail">
+                    <div class="t-name">{{ $topbarUser->name }}</div>
+                    <div class="t-mobile">{{ $topbarUser->mobile }}</div>
+                </div>
+                <div class="topbar-avatar">{{ strtoupper(substr($topbarUser->name, 0, 1)) }}</div>
             </div>
         </div>
     </div>
