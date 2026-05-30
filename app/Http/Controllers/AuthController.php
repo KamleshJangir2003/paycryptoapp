@@ -53,6 +53,7 @@ class AuthController extends Controller
 
         $request->validate([
             'name'     => 'required|string|max:100',
+            'mobile'   => 'required|digits:10|unique:users,mobile',
             'password' => 'required|min:6|confirmed',
             'referral_code' => 'nullable|exists:users,referral_code',
         ]);
@@ -65,6 +66,7 @@ class AuthController extends Controller
 
         $user = User::create([
             'name'        => $request->name,
+            'mobile'      => $request->mobile,
             'email'       => session('reg_email'),
             'password'    => Hash::make($request->password),
             'referred_by' => $referrer?->id,

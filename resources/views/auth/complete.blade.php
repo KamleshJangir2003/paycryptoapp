@@ -51,6 +51,10 @@
                 <input type="text" name="name" class="form-control" placeholder="Enter your full name" value="{{ old('name') }}" required>
             </div>
             <div class="mb-3">
+                <label class="form-label">Mobile Number</label>
+                <input type="tel" name="mobile" class="form-control" placeholder="10-digit mobile number" value="{{ old('mobile') }}" maxlength="10" required>
+            </div>
+            <div class="mb-3">
                 <label class="form-label">Password</label>
                 <input type="password" name="password" class="form-control" placeholder="Minimum 6 characters" required>
             </div>
