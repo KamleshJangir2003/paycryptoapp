@@ -84,8 +84,6 @@
                                             <span style="color:#c0c0e0; font-size:.85rem; font-family:monospace;">{{ $w->method === 'upi' ? $w->upi_id : $w->bank_account }}</span>
                                         </div>
                                     </div>
-                                    <label class="form-label">UTR Number <span style="color:#ff4d4d;">*</span></label>
-                                    <input type="text" name="utr_number" class="form-control" placeholder="Enter UTR after sending money" required>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>

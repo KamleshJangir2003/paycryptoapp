@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\{Withdrawal, Commission, Transaction};
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AdminWithdrawalController extends Controller
@@ -19,15 +18,12 @@ class AdminWithdrawalController extends Controller
 
     public function complete(Request $request, Withdrawal $withdrawal)
     {
-        $request->validate(['utr_number' => 'required|string|max:50']);
         if ($withdrawal->status !== 'pending') return back()->with('error', 'Already processed');
 
         DB::transaction(function () use ($request, $withdrawal) {
             $withdrawal->update([
                 'status'       => 'completed',
-                'utr_number'   => $request->utr_number,
                 'in_pool'      => false,
-                'processed_by' => Auth::id(),
                 'processed_at' => now(),
             ]);
 
@@ -42,7 +38,7 @@ class AdminWithdrawalController extends Controller
                 'amount'       => $withdrawal->amount,
                 'balance_after'=> $wallet->main_balance,
                 'reference_id' => $withdrawal->id,
-                'description'  => 'Withdrawal completed - UTR: ' . $request->utr_number,
+                'description'  => 'Withdrawal completed',
                 'status'       => 'completed',
             ]);
 
@@ -60,7 +56,6 @@ class AdminWithdrawalController extends Controller
             $withdrawal->update([
                 'status'       => 'failed',
                 'in_pool'      => false,
-                'processed_by' => Auth::id(),
                 'processed_at' => now(),
                 'admin_note'   => $request->admin_note,
             ]);
