@@ -79,4 +79,18 @@ class WithdrawalController extends Controller
 
         return redirect()->route('withdrawal.index')->with('success', 'Withdrawal request added to pool.');
     }
+
+    public function receipt(Withdrawal $withdrawal)
+    {
+        if ($withdrawal->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $totalWithdrawals = Withdrawal::where('user_id', Auth::id())
+            ->where('status', 'completed')->count();
+        $totalAmount = Withdrawal::where('user_id', Auth::id())
+            ->where('status', 'completed')->sum('amount');
+
+        return view('withdrawal.receipt', compact('withdrawal', 'totalWithdrawals', 'totalAmount'));
+    }
 }

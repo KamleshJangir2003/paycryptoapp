@@ -7,7 +7,7 @@
     <div class="card-header d-flex align-items-center gap-2">
         <span style="width:10px;height:10px;background:#4cdf80;border-radius:50%;display:inline-block;animation:blink 1.2s infinite;"></span>
         <span>Live Withdrawal Pool</span>
-        <span class="ms-auto" style="color:#7777aa; font-size:.85rem;">{{ count($pool) }} pending</span>
+        <span class="ms-auto" style="color:#7777aa; font-size:.85rem;">{{ count($pool) }} active</span>
     </div>
     <div class="card-body p-0">
         <div class="table-responsive">
@@ -18,6 +18,7 @@
                     <th>User</th>
                     <th>Amount</th>
                     <th>Method & Details</th>
+                    <th>Status</th>
                     <th>Requested</th>
                     <th>Action</th>
                 </tr>
@@ -46,12 +47,33 @@
                         </a>
                         @endif
                     </td>
+                    <td>
+                        @if($w->status === 'pending')
+                            <span class="badge badge-pending">Pending</span>
+                        @else
+                            <span class="badge badge-processing">Processing</span>
+                        @endif
+                    </td>
                     <td style="color:#7777aa; font-size:.82rem;">{{ $w->created_at->diffForHumans() }}</td>
                     <td>
-                        <div class="d-flex gap-1">
+                        <div class="d-flex gap-1 flex-wrap">
+                            @if($w->status === 'pending')
+                            {{-- Approve: pending → processing --}}
+                            <form method="POST" action="{{ route('admin.withdrawals.approve', $w) }}">
+                                @csrf
+                                <button type="submit" class="btn btn-sm btn-warning" style="background:#4db8ff;border-color:#4db8ff;color:#000;">
+                                    <i class="bi bi-hourglass-split"></i> Approve
+                                </button>
+                            </form>
+                            @endif
+
+                            @if($w->status === 'processing')
+                            {{-- Complete: processing → completed --}}
                             <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#doneModal{{ $w->id }}">
-                                <i class="bi bi-check-lg"></i> Done
+                                <i class="bi bi-check-lg"></i> Complete
                             </button>
+                            @endif
+
                             <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#failModal{{ $w->id }}">
                                 <i class="bi bi-x-lg"></i> Fail
                             </button>
@@ -67,7 +89,7 @@
                                 <h5 class="modal-title"><i class="bi bi-check-circle-fill me-2" style="color:#4cdf80;"></i>Complete Withdrawal #{{ $w->id }}</h5>
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                             </div>
-                            <form method="POST" action="{{ route('admin.withdrawals.complete', $w) }}">
+                            <form method="POST" action="{{ route('admin.withdrawals.complete', $w) }}" enctype="multipart/form-data">
                                 @csrf
                                 <div class="modal-body">
                                     <div style="background:#1a1a38; border-radius:10px; padding:14px; margin-bottom:16px;">
@@ -84,6 +106,18 @@
                                             <span style="color:#c0c0e0; font-size:.85rem; font-family:monospace;">{{ $w->method === 'upi' ? $w->upi_id : $w->bank_account }}</span>
                                         </div>
                                     </div>
+                                    
+                                    <label class="form-label">UTR / Transaction Reference <span style="color:#7777aa;">(optional)</span></label>
+                                    <input type="text" name="utr_number" class="form-control mb-3" placeholder="Enter UTR number...">
+                                    
+                                    <label class="form-label">Receipt / Proof Screenshot <span style="color:#7777aa;">(optional)</span></label>
+                                    <div style="border: 2px dashed #3a3a60; border-radius: 8px; padding: 16px; text-align: center; cursor: pointer;" id="uploadZone{{ $w->id }}">
+                                        <i class="bi bi-cloud-upload" style="font-size: 2rem; color: #ff9800;"></i>
+                                        <p style="color: #c0c0e0; margin-top: 8px;">Click to upload receipt/screenshot</p>
+                                        <input type="file" name="proof_screenshot" accept="image/*" class="form-control" id="proofInput{{ $w->id }}" style="display: none;">
+                                    </div>
+                                    <small style="color: #7777aa;">JPG, PNG, GIF (Max 5MB)</small>
+                                    <div id="fileName{{ $w->id }}" style="color: #4cdf80; margin-top: 8px; display: none;"></div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -93,6 +127,18 @@
                         </div>
                     </div>
                 </div>
+
+                <script>
+                document.getElementById('uploadZone{{ $w->id }}').addEventListener('click', function() {
+                    document.getElementById('proofInput{{ $w->id }}').click();
+                });
+                document.getElementById('proofInput{{ $w->id }}').addEventListener('change', function(e) {
+                    if (e.target.files.length > 0) {
+                        document.getElementById('fileName{{ $w->id }}').textContent = '✓ ' + e.target.files[0].name;
+                        document.getElementById('fileName{{ $w->id }}').style.display = 'block';
+                    }
+                });
+                </script>
 
                 {{-- Fail Modal --}}
                 <div class="modal fade" id="failModal{{ $w->id }}" tabindex="-1">
@@ -122,7 +168,7 @@
 
                 @empty
                 <tr>
-                    <td colspan="6" class="text-center py-5">
+                    <td colspan="7" class="text-center py-5">
                         <div style="font-size:2.5rem;">✅</div>
                         <div class="text-muted mt-2">Pool is empty - all processed</div>
                     </td>
@@ -144,7 +190,7 @@
         <div class="table-responsive">
         <table class="table mb-0">
             <thead>
-                <tr><th>#</th><th>User</th><th>Amount</th><th>Method</th><th>UTR</th><th>Status</th><th>Date</th></tr>
+                <tr><th>#</th><th>User</th><th>Amount</th><th>Method</th><th>UTR</th><th>Status</th><th>Date</th><th>Receipt</th></tr>
             </thead>
             <tbody>
                 @forelse($withdrawals as $w)
@@ -159,9 +205,20 @@
                     <td style="color:#c0c0e0; font-family:monospace; font-size:.85rem;">{{ $w->utr_number ?? '—' }}</td>
                     <td><span class="badge badge-{{ $w->status }}">{{ ucfirst($w->status) }}</span></td>
                     <td style="color:#7777aa; font-size:.82rem;">{{ $w->created_at->format('d M Y') }}</td>
+                    <td>
+                        @if($w->status === 'completed')
+                        <div class="d-flex gap-1 flex-wrap">
+                            <a href="{{ route('admin.withdrawals.receipt', $w) }}" target="_blank" class="btn btn-sm" style="background:#1a1a38;border:1px solid #3a3a60;color:#4cdf80;font-size:.78rem;">
+                                <i class="bi bi-file-earmark-text"></i> Receipt
+                            </a>
+                        </div>
+                        @else
+                        <span style="color:#3a3a60;">—</span>
+                        @endif
+                    </td>
                 </tr>
                 @empty
-                <tr><td colspan="7" class="text-center py-4 text-muted">No withdrawals yet</td></tr>
+                <tr><td colspan="8" class="text-center py-4 text-muted">No withdrawals yet</td></tr>
                 @endforelse
             </tbody>
         </table>

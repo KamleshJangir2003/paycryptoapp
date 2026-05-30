@@ -49,6 +49,7 @@ Route::middleware(['auth', 'deposit.check'])->group(function () {
     Route::get('/withdrawal', [WithdrawalController::class, 'index'])->name('withdrawal.index');
     Route::get('/withdrawal/create', [WithdrawalController::class, 'create'])->name('withdrawal.create');
     Route::post('/withdrawal', [WithdrawalController::class, 'store'])->name('withdrawal.store');
+    Route::get('/withdrawal/{withdrawal}/receipt', [WithdrawalController::class, 'receipt'])->name('withdrawal.receipt');
 
     Route::get('/reports', [ReportController::class, 'index'])->name('reports');
     Route::get('/reports/finance', [\App\Http\Controllers\FinanceReportController::class, 'finance'])->name('reports.finance');
@@ -84,8 +85,11 @@ Route::middleware(['auth:admin', \App\Http\Middleware\AdminMiddleware::class])
     Route::post('/deposits/{deposit}/reject', [AdminDepositController::class, 'reject'])->name('deposits.reject');
 
     Route::get('/withdrawals', [AdminWithdrawalController::class, 'index'])->name('withdrawals.index');
+    Route::post('/withdrawals/{withdrawal}/approve', [AdminWithdrawalController::class, 'approve'])->name('withdrawals.approve');
     Route::post('/withdrawals/{withdrawal}/complete', [AdminWithdrawalController::class, 'complete'])->name('withdrawals.complete');
     Route::post('/withdrawals/{withdrawal}/fail', [AdminWithdrawalController::class, 'fail'])->name('withdrawals.fail');
+    Route::get('/withdrawals/{withdrawal}/summary', [AdminWithdrawalController::class, 'summary'])->name('withdrawals.summary');
+    Route::get('/withdrawals/{withdrawal}/receipt', [AdminWithdrawalController::class, 'receipt'])->name('withdrawals.receipt');
 
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
     Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');

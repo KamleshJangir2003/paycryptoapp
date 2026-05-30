@@ -12,19 +12,46 @@ class AdminWithdrawalController extends Controller
     public function index()
     {
         $withdrawals = Withdrawal::with('user')->latest()->paginate(20);
-        $pool = Withdrawal::with('user')->where('status', 'pending')->where('in_pool', true)->latest()->get();
+        $pool = Withdrawal::with('user')
+            ->whereIn('status', ['pending', 'processing'])
+            ->where('in_pool', true)
+            ->latest()->get();
         return view('admin.withdrawals.index', compact('withdrawals', 'pool'));
+    }
+
+    public function approve(Withdrawal $withdrawal)
+    {
+        if ($withdrawal->status !== 'pending') return back()->with('error', 'Already processed');
+
+        $withdrawal->update(['status' => 'processing']);
+
+        return back()->with('success', 'Withdrawal marked as Processing.');
     }
 
     public function complete(Request $request, Withdrawal $withdrawal)
     {
-        if ($withdrawal->status !== 'pending') return back()->with('error', 'Already processed');
+        if ($withdrawal->status !== 'processing') return back()->with('error', 'Approve first before completing');
 
-        DB::transaction(function () use ($request, $withdrawal) {
+        $request->validate([
+            'utr_number' => 'nullable|string|max:100',
+            'proof_screenshot' => 'nullable|image|max:5120',
+        ]);
+
+        $proofPath = $withdrawal->proof_screenshot;
+        if ($request->hasFile('proof_screenshot')) {
+            if ($withdrawal->proof_screenshot) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($withdrawal->proof_screenshot);
+            }
+            $proofPath = $request->file('proof_screenshot')->store('withdrawals/proofs', 'public');
+        }
+
+        DB::transaction(function () use ($request, $withdrawal, $proofPath) {
             $withdrawal->update([
                 'status'       => 'completed',
                 'in_pool'      => false,
                 'processed_at' => now(),
+                'utr_number'   => $request->utr_number,
+                'proof_screenshot' => $proofPath,
             ]);
 
             $wallet = $withdrawal->user->wallet;
@@ -42,11 +69,31 @@ class AdminWithdrawalController extends Controller
                 'status'       => 'completed',
             ]);
 
-            // Commission: 0.5% to referrer on withdrawal
             $this->creditWithdrawalCommission($withdrawal);
         });
 
         return back()->with('success', 'Withdrawal completed.');
+    }
+
+    public function summary(Withdrawal $withdrawal)
+    {
+        $withdrawal->load('user');
+        $totalWithdrawals = Withdrawal::where('user_id', $withdrawal->user_id)
+            ->where('status', 'completed')->count();
+        $totalAmount = Withdrawal::where('user_id', $withdrawal->user_id)
+            ->where('status', 'completed')->sum('amount');
+        return view('admin.withdrawals.summary', compact('withdrawal', 'totalWithdrawals', 'totalAmount'));
+    }
+
+    public function receipt(Withdrawal $withdrawal)
+    {
+        $withdrawal->load('user');
+        $totalWithdrawals = Withdrawal::where('user_id', $withdrawal->user_id)
+            ->where('status', 'completed')->count();
+        $totalAmount = Withdrawal::where('user_id', $withdrawal->user_id)
+            ->where('status', 'completed')->sum('amount');
+
+        return view('admin.withdrawals.receipt', compact('withdrawal', 'totalWithdrawals', 'totalAmount'));
     }
 
     public function fail(Request $request, Withdrawal $withdrawal)
@@ -59,7 +106,6 @@ class AdminWithdrawalController extends Controller
                 'processed_at' => now(),
                 'admin_note'   => $request->admin_note,
             ]);
-            // Refund to main wallet
             $wallet = $withdrawal->user->wallet;
             $wallet->decrement('pending_balance', $withdrawal->amount);
             $wallet->increment('main_balance', $withdrawal->amount);

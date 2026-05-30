@@ -10,7 +10,7 @@ class Withdrawal extends Model
         'user_id', 'amount', 'method', 'upi_id',
         'bank_account', 'bank_ifsc', 'bank_name',
         'qr_screenshot', 'utr_number', 'status', 'in_pool',
-        'processed_by', 'processed_at', 'admin_note',
+        'processed_by', 'processed_at', 'admin_note', 'proof_screenshot',
     ];
 
     protected $casts = ['processed_at' => 'datetime', 'in_pool' => 'boolean'];
