@@ -23,7 +23,7 @@ class AdminDepositController extends Controller
         DB::transaction(function () use ($deposit) {
             $deposit->update([
                 'status'      => 'approved',
-                'verified_by' => Auth::id(),
+                'verified_by' => Auth::guard('admin')->id(),
                 'verified_at' => now(),
             ]);
 
@@ -54,7 +54,7 @@ class AdminDepositController extends Controller
         $request->validate(['admin_note' => 'required|string']);
         $deposit->update([
             'status'      => 'rejected',
-            'verified_by' => Auth::id(),
+            'verified_by' => Auth::guard('admin')->id(),
             'verified_at' => now(),
             'admin_note'  => $request->admin_note,
         ]);
