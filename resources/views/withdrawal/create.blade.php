@@ -8,17 +8,17 @@
     {{-- Balance Info --}}
     <div class="row g-3 mb-4">
         <div class="col-6">
-            <div class="stat-card text-center">
-                <div class="stat-label">Available Balance</div>
-                <div class="stat-value">₹{{ number_format($user->wallet->main_balance, 2) }}</div>
-                <div style="color:#26a17b;font-size:.78rem;margin-top:3px;">≈ {{ number_format($usdtRate > 0 ? $user->wallet->main_balance / $usdtRate : 0, 4) }} USDT</div>
+            <div class="stat-card text-center" style="padding:12px 8px;">
+                <div class="stat-label" style="font-size:.72rem;">Available Balance</div>
+                <div style="font-size:1.1rem;font-weight:800;color:#f0a500;word-break:break-all;line-height:1.2;margin:4px 0;">₹{{ number_format($user->wallet->main_balance, 2) }}</div>
+                <div style="color:#26a17b;font-size:.7rem;margin-top:2px;">≈ {{ number_format($usdtRate > 0 ? $user->wallet->main_balance / $usdtRate : 0, 2) }} USDT</div>
             </div>
         </div>
         <div class="col-6">
-            <div class="stat-card text-center">
-                <div class="stat-label">Pending</div>
-                <div class="stat-value orange">₹{{ number_format($user->wallet->pending_balance, 2) }}</div>
-                <div style="color:#26a17b;font-size:.78rem;margin-top:3px;">≈ {{ number_format($usdtRate > 0 ? $user->wallet->pending_balance / $usdtRate : 0, 4) }} USDT</div>
+            <div class="stat-card text-center" style="padding:12px 8px;">
+                <div class="stat-label" style="font-size:.72rem;">Pending</div>
+                <div style="font-size:1.1rem;font-weight:800;color:#ff9800;word-break:break-all;line-height:1.2;margin:4px 0;">₹{{ number_format($user->wallet->pending_balance, 2) }}</div>
+                <div style="color:#26a17b;font-size:.7rem;margin-top:2px;">≈ {{ number_format($usdtRate > 0 ? $user->wallet->pending_balance / $usdtRate : 0, 2) }} USDT</div>
             </div>
         </div>
     </div>

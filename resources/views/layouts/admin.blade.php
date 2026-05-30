@@ -23,8 +23,9 @@
         .nav-link.active { color: #ff4d4d !important; background: #1e1e40; border-left-color: #ff4d4d; font-weight: 600; }
         .sidebar-divider { border-color: #2a2a50; margin: 8px 20px; }
         .main-content { margin-left: 240px; min-height: 100vh; }
-        .topbar { background: #10102a; border-bottom: 1px solid #2a2a50; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-        .topbar-title { font-size: 1.2rem; font-weight: 700; color: #f0f0f0; }
+        .topbar { background: #10102a; border-bottom: 1px solid #2a2a50; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; gap: 8px; }
+        .topbar-title { font-size: 1rem; font-weight: 700; color: #f0f0f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
+        .topbar-admin { font-size: .78rem; color: #7777aa; white-space: nowrap; flex-shrink: 0; }
         .page-body { padding: 24px 28px; }
         .card { background: #10102a; border: 1px solid #2a2a50; border-radius: 14px; }
         .card-header { background: #1a1a38; border-bottom: 1px solid #2a2a50; border-radius: 14px 14px 0 0 !important; padding: 14px 20px; color: #f0f0f0; font-weight: 600; }
@@ -84,7 +85,9 @@
             .sidebar-overlay.open { display: block; }
             .main-content { margin-left: 0; }
             .hamburger { display: block; }
-            .page-body { padding: 16px; }
+            .page-body { padding: 12px; }
+            .topbar { padding: 10px 12px; }
+            .topbar-title { font-size: .9rem; max-width: 130px; }
         }
     </style>
 </head>
@@ -148,7 +151,7 @@
             <button class="hamburger" onclick="openSidebar()"><i class="bi bi-list"></i></button>
             <div class="topbar-title">@yield('title')</div>
         </div>
-        <small style="color:#7777aa;">Admin: <span style="color:#ff4d4d;">{{ auth('admin')->user()->name }}</span></small>
+        <div class="topbar-admin">Admin: <span style="color:#ff4d4d;">{{ auth('admin')->user()->name }}</span></div>
     </div>
 
     <div class="page-body">
