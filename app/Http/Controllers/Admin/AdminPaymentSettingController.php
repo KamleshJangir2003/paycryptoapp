@@ -25,10 +25,11 @@ class AdminPaymentSettingController extends Controller
             'wallet_name'    => 'nullable|string|max:100',
             'wallet_qr'      => 'nullable|image|max:2048',
             'deposit_note'   => 'nullable|string|max:500',
+            'usdt_rate'      => 'nullable|numeric|min:1',
         ]);
 
         $setting = PaymentSetting::get();
-        $data = $request->only('upi_id', 'upi_name', 'wallet_address', 'wallet_name', 'deposit_note');
+        $data = $request->only('upi_id', 'upi_name', 'wallet_address', 'wallet_name', 'deposit_note', 'usdt_rate');
 
         $data['upi_active']    = $request->has('upi_active');
         $data['wallet_active'] = $request->has('wallet_active');

@@ -15,6 +15,7 @@
                     <th>#</th>
                     <th>User</th>
                     <th>Amount</th>
+                    <th>Type</th>
                     <th>UTR Number</th>
                     <th>Screenshot</th>
                     <th>Status</th>
@@ -30,7 +31,20 @@
                         <div style="color:#f0f0f0; font-weight:600;">{{ $d->user->name }}</div>
                         <div style="color:#7777aa; font-size:.8rem;">{{ $d->user->mobile }}</div>
                     </td>
-                    <td style="color:#f0a500; font-weight:700; font-size:1rem;">₹{{ number_format($d->amount, 2) }}</td>
+                    <td>
+                        <div style="color:#f0a500;font-weight:700;font-size:1rem;">₹{{ number_format($d->amount, 2) }}</div>
+                        @if($d->usdt_amount)
+                        <div style="color:#26a17b;font-size:.78rem;">{{ number_format($d->usdt_amount, 4) }} USDT</div>
+                        <div style="color:#3a3a60;font-size:.72rem;">@ ₹{{ number_format($d->usdt_rate_at_time, 2) }}</div>
+                        @endif
+                    </td>
+                    <td>
+                        @if($d->payment_type === 'usdt')
+                            <span class="badge" style="background:#0a1a12;border:1px solid #26a17b;color:#26a17b;">₮ USDT</span>
+                        @else
+                            <span class="badge" style="background:#1a1200;border:1px solid #f0a500;color:#f0a500;">📱 UPI</span>
+                        @endif
+                    </td>
                     <td style="color:#c0c0e0; font-family:monospace; font-size:.88rem;">{{ $d->utr_number ?? '—' }}</td>
                     <td>
                         @if($d->screenshot)

@@ -11,12 +11,14 @@
             <div class="stat-card text-center">
                 <div class="stat-label">Available Balance</div>
                 <div class="stat-value">₹{{ number_format($user->wallet->main_balance, 2) }}</div>
+                <div style="color:#26a17b;font-size:.78rem;margin-top:3px;">≈ {{ number_format($usdtRate > 0 ? $user->wallet->main_balance / $usdtRate : 0, 4) }} USDT</div>
             </div>
         </div>
         <div class="col-6">
             <div class="stat-card text-center">
                 <div class="stat-label">Pending</div>
                 <div class="stat-value orange">₹{{ number_format($user->wallet->pending_balance, 2) }}</div>
+                <div style="color:#26a17b;font-size:.78rem;margin-top:3px;">≈ {{ number_format($usdtRate > 0 ? $user->wallet->pending_balance / $usdtRate : 0, 4) }} USDT</div>
             </div>
         </div>
     </div>
@@ -27,8 +29,14 @@
             <form method="POST" action="{{ route('withdrawal.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
-                    <label class="form-label">Amount (₹)</label>
-                    <input type="number" name="amount" class="form-control" min="100" placeholder="Minimum ₹100" value="{{ old('amount') }}" required>
+                    <label class="form-label">Amount (₹ INR)</label>
+                    <input type="number" name="amount" id="wdAmount" class="form-control" min="100" placeholder="Minimum ₹100" value="{{ old('amount') }}" required>
+                    <div id="wdUsdtDisplay" class="mt-2 px-3 py-2" style="background:#0a1a12;border:1px solid #26a17b33;border-radius:8px;display:none;">
+                        <span style="color:#5a8a70;font-size:.8rem;">You will withdraw ≈ </span>
+                        <span id="wdUsdtVal" style="color:#26a17b;font-weight:700;"></span>
+                        <span style="color:#3a6a50;font-size:.8rem;"> USDT</span>
+                        <span style="color:#5a5a80;font-size:.75rem;"> (1 USDT = ₹{{ number_format($usdtRate, 2) }})</span>
+                    </div>
                 </div>
 
                 <div class="mb-3">
@@ -131,6 +139,16 @@ document.querySelectorAll('.method-radio').forEach(radio => {
 // init
 const checked = document.querySelector('.method-radio:checked');
 if (checked) showFields(checked.value);
+
+// USDT live converter
+const WD_USDT_RATE = {{ $usdtRate }};
+document.getElementById('wdAmount').addEventListener('input', function() {
+    const val = parseFloat(this.value);
+    const box = document.getElementById('wdUsdtDisplay');
+    if (!val || val <= 0) { box.style.display = 'none'; return; }
+    box.style.display = 'block';
+    document.getElementById('wdUsdtVal').textContent = (val / WD_USDT_RATE).toFixed(4);
+});
 
 function previewQR(input) {
     if (!input.files[0]) return;

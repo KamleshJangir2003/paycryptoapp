@@ -16,30 +16,62 @@
     </div>
 </div>
 @endunless
+{{-- USDT Rate Bar --}}
+<div class="d-flex align-items-center gap-3 mb-3 px-3 py-2" style="background:linear-gradient(90deg,#0a1a12,#0d1f18); border:1px solid #26a17b55; border-radius:12px;">
+    <div style="width:34px;height:34px;background:#26a17b;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:900;color:#fff;font-size:1rem;">₮</div>
+    <div>
+        <div style="color:#5a8a70;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Live USDT Rate</div>
+        <div style="font-size:1.05rem;font-weight:800;"><span style="color:#26a17b;">1 USDT</span> <span style="color:#5a5a80;">=</span> <span style="color:#f0a500;">₹{{ number_format($usdtRate, 2) }}</span></div>
+    </div>
+    <div class="ms-auto text-end">
+        <div style="color:#5a5a80;font-size:.72rem;"></div>
+        <div style="color:#26a17b;font-size:.78rem;font-weight:600;">● Live</div>
+    </div>
+</div>
+
 {{-- Wallet Cards --}}
+@php
+    $totalBalance = $user->wallet->main_balance + $user->wallet->earnings_balance;
+    $totalUsdt    = $usdtRate > 0 ? $totalBalance / $usdtRate : 0;
+@endphp
+
+{{-- Total Balance Card --}}
+<div class="mb-3" style="background:linear-gradient(135deg,#0d1f18 0%,#13132b 100%);border:1px solid #26a17b44;border-radius:16px;padding:20px 22px;">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <div style="color:#5a8a70;font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Total Balance</div>
+            <div style="font-size:2rem;font-weight:900;color:#f0a500;line-height:1.1;">₹{{ number_format($totalBalance, 2) }}</div>
+            <div style="color:#26a17b;font-size:.9rem;font-weight:700;margin-top:3px;">≈ {{ number_format($totalUsdt, 4) }} <span style="color:#5a8a70;font-weight:500;">USDT</span></div>
+        </div>
+        <div class="text-end">
+            <div style="color:#5a5a80;font-size:.75rem;">Main + Earnings</div>
+            <div style="font-size:.85rem;color:#8888aa;margin-top:4px;">Pending: <span style="color:#ff9800;">₹{{ number_format($user->wallet->pending_balance, 2) }}</span></div>
+            <div style="font-size:.78rem;color:#5a8a70;">≈ {{ number_format($usdtRate > 0 ? $user->wallet->pending_balance / $usdtRate : 0, 4) }} USDT</div>
+        </div>
+    </div>
+</div>
+
+{{-- 3 Wallet Cards --}}
 <div class="row g-3 mb-4">
-    <div class="col-6 col-md-3">
-        <div class="stat-card">
-            <div class="stat-label">💰 Main Wallet</div>
-            <div class="stat-value">₹{{ number_format($user->wallet->main_balance, 2) }}</div>
+    <div class="col-4">
+        <div style="background:#13132b;border:1px solid #2a2a50;border-radius:14px;padding:16px 14px;">
+            <div style="color:#8888aa;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;">💰 Main</div>
+            <div style="font-size:1.15rem;font-weight:800;color:#f0a500;">₹{{ number_format($user->wallet->main_balance, 2) }}</div>
+            <div style="color:#26a17b;font-size:.75rem;margin-top:4px;font-weight:600;">{{ number_format($usdtRate > 0 ? $user->wallet->main_balance / $usdtRate : 0, 4) }} <span style="color:#3a6a50;font-weight:400;">USDT</span></div>
         </div>
     </div>
-    <div class="col-6 col-md-3">
-        <div class="stat-card">
-            <div class="stat-label">📈 Earnings</div>
-            <div class="stat-value green">₹{{ number_format($user->wallet->earnings_balance, 2) }}</div>
+    <div class="col-4">
+        <div style="background:#13132b;border:1px solid #2a2a50;border-radius:14px;padding:16px 14px;">
+            <div style="color:#8888aa;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;">📈 Earnings</div>
+            <div style="font-size:1.15rem;font-weight:800;color:#4cdf80;">₹{{ number_format($user->wallet->earnings_balance, 2) }}</div>
+            <div style="color:#26a17b;font-size:.75rem;margin-top:4px;font-weight:600;">{{ number_format($usdtRate > 0 ? $user->wallet->earnings_balance / $usdtRate : 0, 4) }} <span style="color:#3a6a50;font-weight:400;">USDT</span></div>
         </div>
     </div>
-    <div class="col-6 col-md-3">
-        <div class="stat-card">
-            <div class="stat-label">⏳ Pending</div>
-            <div class="stat-value orange">₹{{ number_format($user->wallet->pending_balance, 2) }}</div>
-        </div>
-    </div>
-    <div class="col-6 col-md-3">
-        <div class="stat-card">
-            <div class="stat-label">👥 Referrals</div>
-            <div class="stat-value blue">{{ $referralCount }}</div>
+    <div class="col-4">
+        <div style="background:#13132b;border:1px solid #2a2a50;border-radius:14px;padding:16px 14px;">
+            <div style="color:#8888aa;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;">⏳ Pending</div>
+            <div style="font-size:1.15rem;font-weight:800;color:#ff9800;">₹{{ number_format($user->wallet->pending_balance, 2) }}</div>
+            <div style="color:#26a17b;font-size:.75rem;margin-top:4px;font-weight:600;">{{ number_format($usdtRate > 0 ? $user->wallet->pending_balance / $usdtRate : 0, 4) }} <span style="color:#3a6a50;font-weight:400;">USDT</span></div>
         </div>
     </div>
 </div>
@@ -146,6 +178,9 @@
                     <td style="color:#c0c0e0;">{{ ucfirst($tx->wallet) }}</td>
                     <td class="{{ $tx->direction === 'credit' ? 'text-green' : 'text-red' }}" style="font-weight:600;">
                         {{ $tx->direction === 'credit' ? '+' : '-' }}₹{{ number_format($tx->amount, 2) }}
+                        @if($tx->type === 'deposit' && $tx->deposit && $tx->deposit->payment_type === 'usdt')
+                        <div style="color:#26a17b;font-size:.75rem;font-weight:500;">{{ number_format($tx->deposit->usdt_amount, 4) }} USDT</div>
+                        @endif
                     </td>
                     <td><span class="badge badge-{{ $tx->status }}">{{ ucfirst($tx->status) }}</span></td>
                     <td style="color:#8888aa; font-size:.85rem;">{{ $tx->created_at->format('d M, h:i A') }}</td>

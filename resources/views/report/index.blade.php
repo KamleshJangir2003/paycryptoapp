@@ -51,6 +51,9 @@
                     <td style="color:#c0c0e0;">{{ ucfirst($tx->wallet) }}</td>
                     <td class="{{ $tx->direction === 'credit' ? 'text-green' : 'text-red' }}" style="font-weight:700;">
                         {{ $tx->direction === 'credit' ? '+' : '-' }}₹{{ number_format($tx->amount, 2) }}
+                        @if($tx->type === 'deposit' && $tx->deposit && $tx->deposit->payment_type === 'usdt')
+                        <div style="color:#26a17b;font-size:.75rem;font-weight:500;">{{ number_format($tx->deposit->usdt_amount, 4) }} USDT</div>
+                        @endif
                     </td>
                     <td style="color:#8888aa; font-size:.85rem;">{{ $tx->description ?? '—' }}</td>
                     <td><span class="badge badge-{{ $tx->status }}">{{ ucfirst($tx->status) }}</span></td>

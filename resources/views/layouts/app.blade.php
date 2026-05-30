@@ -376,6 +376,13 @@
                         <div class="bal-value">₹{{ number_format($topbarWallet->main_balance, 2) }}</div>
                     </div>
                 </div>
+                <div class="topbar-balance" style="border-color:#26a17b44;">
+                    <span style="color:#26a17b;font-weight:900;font-size:1rem;">₮</span>
+                    <div>
+                        <div class="bal-label" style="color:#3a6a50;">USDT</div>
+                        <div class="bal-value" style="color:#26a17b;">{{ number_format(isset($usdtRate) && $usdtRate > 0 ? $topbarWallet->main_balance / $usdtRate : 0, 2) }}</div>
+                    </div>
+                </div>
                 @endif
                 <div class="topbar-user-detail">
                     <div class="t-name">{{ $topbarUser->name }}</div>

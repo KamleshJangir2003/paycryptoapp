@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Deposit extends Model
 {
     protected $fillable = [
-        'user_id', 'amount', 'utr_number', 'screenshot',
-        'upi_id', 'status', 'verified_by', 'verified_at', 'admin_note',
+        'user_id', 'amount', 'usdt_amount', 'usdt_rate_at_time', 'payment_type',
+        'utr_number', 'screenshot', 'upi_id', 'status', 'verified_by', 'verified_at', 'admin_note',
     ];
 
     protected $casts = ['verified_at' => 'datetime'];

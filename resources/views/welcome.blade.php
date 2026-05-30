@@ -476,8 +476,19 @@
     </div>
 </div>
 
+<!-- USDT TICKER BAR -->
+<div style="background:linear-gradient(90deg,#0a1a12,#0d1f18,#0a1a12);border-bottom:1px solid #26a17b33;padding:9px 5%;display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin-top:73px;">
+    <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:26px;height:26px;background:#26a17b;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:.85rem;flex-shrink:0;">₮</div>
+        <span style="color:#5a8a70;font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;">USDT Rate</span>
+        <span style="color:#26a17b;font-weight:800;font-size:.95rem;">1 USDT = <span style="color:#f5a623;">₹{{ number_format($usdtRate, 2) }}</span></span>
+    </div>
+    <div style="width:1px;height:16px;background:#26a17b33;"></div>
+    <div style="color:#5a8a70;font-size:.78rem;">✅ Deposit via USDT &nbsp;|&nbsp; 💸 Withdraw in INR &nbsp;|&nbsp; ⚡ Instant Conversion</div>
+</div>
+
 <!-- HERO -->
-<section class="hero">
+<section class="hero" style="padding-top:80px;">
     <div class="hero-bg">
         <div class="orb orb1"></div>
         <div class="orb orb2"></div>
@@ -615,6 +626,10 @@
                 <div class="stat-label">Processed Daily</div>
             </div>
             <div class="stat">
+                <div class="stat-num" style="font-size:1.5rem;background:linear-gradient(135deg,#26a17b,#4cdf80);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">₹{{ number_format($usdtRate, 0) }}</div>
+                <div class="stat-label">Per USDT Today</div>
+            </div>
+            <div class="stat">
                 <div class="stat-num">99.9%</div>
                 <div class="stat-label">Uptime</div>
             </div>
@@ -635,6 +650,11 @@
             <p class="section-sub">Powerful tools to manage your money, grow your network, and maximize earnings.</p>
         </div>
         <div class="features-grid">
+            <div class="feature-card reveal">
+                <div class="feature-icon">₮</div>
+                <div class="feature-title">USDT Deposits</div>
+                <div class="feature-desc">Deposit using USDT crypto — auto-converted to INR at live rate. Fast, borderless, and hassle-free.</div>
+            </div>
             <div class="feature-card reveal">
                 <div class="feature-icon">⚡</div>
                 <div class="feature-title">Instant Deposits</div>
@@ -686,7 +706,7 @@
             <div class="step reveal">
                 <div class="step-num">2</div>
                 <div class="step-title">Make a Deposit</div>
-                <div class="step-desc">Add funds to your wallet using our secure payment gateway.</div>
+                <div class="step-desc">Add funds via UPI or USDT crypto. USDT auto-converts to INR at live rate instantly.</div>
             </div>
             <div class="step reveal">
                 <div class="step-num">3</div>

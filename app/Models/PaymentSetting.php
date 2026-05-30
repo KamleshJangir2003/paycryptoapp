@@ -9,7 +9,7 @@ class PaymentSetting extends Model
     protected $fillable = [
         'upi_id', 'upi_name', 'qr_image',
         'wallet_address', 'wallet_name', 'wallet_qr',
-        'upi_active', 'wallet_active', 'deposit_note',
+        'upi_active', 'wallet_active', 'deposit_note', 'usdt_rate',
     ];
 
     protected $casts = [

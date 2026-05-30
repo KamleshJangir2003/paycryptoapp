@@ -14,7 +14,7 @@ class ReportController extends Controller
         $totalWithdrawn  = $user->withdrawals()->where('status', 'completed')->sum('amount');
         $totalCommission = $user->commissions()->sum('commission_amount');
         $referralCount   = $user->referrals()->count();
-        $transactions    = $user->transactions()->latest()->paginate(15);
+        $transactions = $user->transactions()->with('deposit')->latest()->paginate(15);
 
         return view('report.index', compact(
             'user', 'totalDeposited', 'totalWithdrawn',

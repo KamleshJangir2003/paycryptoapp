@@ -116,6 +116,32 @@
 </div>
 </div>
 
+{{-- USDT Rate --}}
+<div class="col-12">
+<div class="card">
+    <div class="card-header">💱 USDT Rate (INR per 1 USDT)</div>
+    <div class="card-body">
+        <div class="row align-items-center">
+            <div class="col-md-4">
+                <div class="input-group">
+                    <span class="input-group-text" style="background:#1a1a2e; border-color:#3a3a60; color:#f0a500;">₹</span>
+                    <input type="number" name="usdt_rate" class="form-control" step="0.01" min="1"
+                        value="{{ $setting->usdt_rate ?? 85.00 }}" placeholder="e.g. 85.50">
+                    <span class="input-group-text" style="background:#1a1a2e; border-color:#3a3a60; color:#26a17b;">/ USDT</span>
+                </div>
+                <div style="color:#5a5a80; font-size:.8rem; margin-top:4px;">This rate will be shown to users on dashboard & deposit page.</div>
+            </div>
+            <div class="col-md-4 mt-3 mt-md-0">
+                <div style="background:#0a0a14; border:1px solid #2a2a50; border-radius:10px; padding:14px 18px;">
+                    <div style="color:#8888aa; font-size:.8rem;">Current Rate</div>
+                    <div style="font-size:1.4rem; font-weight:700; color:#26a17b;">1 USDT = <span style="color:#f0a500;">₹{{ number_format($setting->usdt_rate ?? 85, 2) }}</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
 </div>
 
 <div class="mt-4 text-end">

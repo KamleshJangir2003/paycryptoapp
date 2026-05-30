@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Withdrawal;
 use App\Models\Transaction;
+use App\Models\PaymentSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,8 +20,9 @@ class WithdrawalController extends Controller
 
     public function create()
     {
-        $user = Auth::user()->load('wallet');
-        return view('withdrawal.create', compact('user'));
+        $user     = Auth::user()->load('wallet');
+        $usdtRate = PaymentSetting::get()->usdt_rate ?? 85.00;
+        return view('withdrawal.create', compact('user', 'usdtRate'));
     }
 
     public function store(Request $request)

@@ -18,7 +18,10 @@ Route::get('/terms-conditions', fn() => view('terms'))->name('terms');
 
 // User guest routes
 Route::middleware('guest')->group(function () {
-    Route::get('/', fn() => view('welcome'))->name('home');
+    Route::get('/', function() {
+        $usdtRate = \App\Models\PaymentSetting::get()->usdt_rate ?? 85.00;
+        return view('welcome', compact('usdtRate'));
+    })->name('home');
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register/otp', [AuthController::class, 'sendOtp'])->name('register.otp');
     Route::get('/register/verify', [AuthController::class, 'showVerify'])->name('register.verify');
