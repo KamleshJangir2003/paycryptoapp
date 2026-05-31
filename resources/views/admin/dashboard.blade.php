@@ -17,39 +17,86 @@
 {{-- Stats Row 1: Users & Pending --}}
 <div class="row g-3 mb-3">
     <div class="col-6 col-md-4 col-lg-2">
-        <div class="stat-card text-center">
+        <a href="{{ route('admin.users.index') }}" class="text-decoration-none">
+        <div class="stat-card text-center" style="cursor:pointer;transition:border-color .2s;" onmouseover="this.style.borderColor='#f0a500'" onmouseout="this.style.borderColor=''">
             <div class="stat-label">👥 Total Users</div>
             <div class="stat-value gold">{{ $stats['total_users'] }}</div>
         </div>
+        </a>
     </div>
     <div class="col-6 col-md-4 col-lg-2">
-        <div class="stat-card text-center">
+        <a href="{{ route('admin.deposits.index') }}" class="text-decoration-none">
+        <div class="stat-card text-center" style="cursor:pointer;transition:border-color .2s;" onmouseover="this.style.borderColor='#ff9800'" onmouseout="this.style.borderColor=''">
             <div class="stat-label">⏳ Pending Deposits</div>
             <div class="stat-value orange">{{ $stats['pending_deposits'] }}</div>
         </div>
+        </a>
     </div>
     <div class="col-6 col-md-4 col-lg-2">
-        <div class="stat-card text-center">
+        <a href="{{ route('admin.withdrawals.index') }}" class="text-decoration-none">
+        <div class="stat-card text-center" style="cursor:pointer;transition:border-color .2s;" onmouseover="this.style.borderColor='#ff9800'" onmouseout="this.style.borderColor=''">
             <div class="stat-label">⏳ Pending Withdrawals</div>
             <div class="stat-value orange">{{ $stats['pending_withdrawals'] }}</div>
         </div>
+        </a>
     </div>
     <div class="col-6 col-md-4 col-lg-2">
-        <div class="stat-card text-center">
+        <a href="{{ route('admin.reports.commissions') }}" class="text-decoration-none">
+        <div class="stat-card text-center" style="cursor:pointer;transition:border-color .2s;" onmouseover="this.style.borderColor='#4db8ff'" onmouseout="this.style.borderColor=''">
             <div class="stat-label">💎 Commission</div>
             <div class="stat-value blue" style="font-size:1.1rem;">₹{{ number_format($stats['total_commission'], 0) }}</div>
         </div>
+        </a>
     </div>
     <div class="col-6 col-md-4 col-lg-2">
-        <div class="stat-card text-center">
+        <a href="{{ route('admin.withdrawals.index') }}" class="text-decoration-none">
+        <div class="stat-card text-center" style="cursor:pointer;transition:border-color .2s;" onmouseover="this.style.borderColor='#ff4d4d'" onmouseout="this.style.borderColor=''">
             <div class="stat-label">📤 Total Withdrawn</div>
             <div class="stat-value" style="color:#ff4d4d;font-size:1.1rem;">₹{{ number_format($stats['total_withdrawn'], 0) }}</div>
         </div>
+        </a>
     </div>
     <div class="col-6 col-md-4 col-lg-2">
-        <div class="stat-card text-center">
+        <a href="{{ route('admin.deposits.index') }}" class="text-decoration-none">
+        <div class="stat-card text-center" style="cursor:pointer;transition:border-color .2s;" onmouseover="this.style.borderColor='#4cdf80'" onmouseout="this.style.borderColor=''">
             <div class="stat-label">📥 Total Deposited</div>
             <div class="stat-value green" style="font-size:1.1rem;">₹{{ number_format($stats['total_deposited'], 0) }}</div>
+        </div>
+        </a>
+    </div>
+</div>
+
+{{-- Total Pending Row --}}
+<div class="row g-3 mb-3">
+    <div class="col-12 col-md-4">
+        <a href="{{ route('admin.deposits.index') }}" class="text-decoration-none">
+        <div class="stat-card d-flex align-items-center gap-3" style="cursor:pointer;border-color:#ff980044;transition:border-color .2s;" onmouseover="this.style.borderColor='#ff9800'" onmouseout="this.style.borderColor='#ff980044'">
+            <div style="font-size:2rem;">⏳</div>
+            <div>
+                <div class="stat-label">Total Pending Deposits</div>
+                <div class="stat-value orange" style="font-size:1.5rem;">{{ $stats['pending_deposits'] }}</div>
+            </div>
+        </div>
+        </a>
+    </div>
+    <div class="col-12 col-md-4">
+        <a href="{{ route('admin.withdrawals.index') }}" class="text-decoration-none">
+        <div class="stat-card d-flex align-items-center gap-3" style="cursor:pointer;border-color:#ff4d4d44;transition:border-color .2s;" onmouseover="this.style.borderColor='#ff4d4d'" onmouseout="this.style.borderColor='#ff4d4d44'">
+            <div style="font-size:2rem;">💸</div>
+            <div>
+                <div class="stat-label">Total Pending Withdrawals</div>
+                <div class="stat-value" style="color:#ff4d4d;font-size:1.5rem;">{{ $stats['pending_withdrawals'] }}</div>
+            </div>
+        </div>
+        </a>
+    </div>
+    <div class="col-12 col-md-4">
+        <div class="stat-card d-flex align-items-center gap-3" style="border-color:#a855f744;">
+            <div style="font-size:2rem;">🔔</div>
+            <div>
+                <div class="stat-label">Total Pending (All)</div>
+                <div class="stat-value" style="color:#a855f7;font-size:1.5rem;">{{ $stats['pending_deposits'] + $stats['pending_withdrawals'] }}</div>
+            </div>
         </div>
     </div>
 </div>
