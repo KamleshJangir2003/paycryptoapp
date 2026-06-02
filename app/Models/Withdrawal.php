@@ -17,4 +17,5 @@ class Withdrawal extends Model
 
     public function user() { return $this->belongsTo(User::class); }
     public function processedBy() { return $this->belongsTo(User::class, 'processed_by'); }
+    public function partialTransactions() { return $this->hasMany(WithdrawalTransaction::class); }
 }

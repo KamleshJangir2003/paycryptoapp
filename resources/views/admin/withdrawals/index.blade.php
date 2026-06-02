@@ -58,19 +58,23 @@
                     <td>
                         <div class="d-flex gap-1 flex-wrap">
                             @if($w->status === 'pending')
-                            {{-- Approve: pending → processing --}}
                             <form method="POST" action="{{ route('admin.withdrawals.approve', $w) }}">
                                 @csrf
-                                <button type="submit" class="btn btn-sm btn-warning" style="background:#4db8ff;border-color:#4db8ff;color:#000;">
+                                <button type="submit" class="btn btn-sm" style="background:#4db8ff;border-color:#4db8ff;color:#000;">
                                     <i class="bi bi-hourglass-split"></i> Approve
                                 </button>
                             </form>
                             @endif
 
+                            {{-- Partial Payment Upload --}}
+                            <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#partialModal{{ $w->id }}">
+                                <i class="bi bi-upload"></i> Upload Payment
+                            </button>
+
                             @if($w->status === 'processing')
-                            {{-- Complete: processing → completed --}}
-                            <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#doneModal{{ $w->id }}">
-                                <i class="bi bi-check-lg"></i> Complete
+                            {{-- Finalize (complete karo jab sab confirm ho jaaye) --}}
+                            <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#finalizeModal{{ $w->id }}">
+                                <i class="bi bi-check-all"></i> Finalize
                             </button>
                             @endif
 
@@ -81,64 +85,118 @@
                     </td>
                 </tr>
 
-                {{-- Complete Modal --}}
-                <div class="modal fade" id="doneModal{{ $w->id }}" tabindex="-1">
+                {{-- Partial Upload Modal --}}
+                <div class="modal fade" id="partialModal{{ $w->id }}" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><i class="bi bi-upload me-2" style="color:#ff9800;"></i>Upload Partial Payment — #{{ $w->id }} (₹{{ number_format($w->amount, 2) }})</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                {{-- Pichle partial transactions --}}
+                                @php $partials = $w->partialTransactions()->latest()->get(); $confirmedTotal = $partials->where('status','confirmed')->sum('amount'); $pendingTotal = $partials->where('status','pending')->sum('amount'); @endphp
+                                @if($partials->count())
+                                <div style="background:#1a1a38; border-radius:10px; padding:14px; margin-bottom:16px;">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span style="color:#aaa; font-size:.85rem;">Total Withdrawal</span>
+                                        <span style="color:#ff4d4d; font-weight:700;">₹{{ number_format($w->amount, 2) }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span style="color:#aaa; font-size:.85rem;">User ne Confirm kiya</span>
+                                        <span style="color:#4cdf80; font-weight:700;">₹{{ number_format($confirmedTotal, 2) }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span style="color:#aaa; font-size:.85rem;">Pending Confirmation</span>
+                                        <span style="color:#ff9800; font-weight:700;">₹{{ number_format($pendingTotal, 2) }}</span>
+                                    </div>
+                                </div>
+                                <table class="table table-sm mb-3" style="font-size:.82rem;">
+                                    <thead><tr><th>#</th><th>Amount</th><th>UTR</th><th>Screenshot</th><th>Status</th><th>Time</th></tr></thead>
+                                    <tbody>
+                                    @foreach($partials as $pt)
+                                    <tr>
+                                        <td style="color:#7777aa;">{{ $loop->iteration }}</td>
+                                        <td style="color:#f0a500; font-weight:600;">₹{{ number_format($pt->amount, 2) }}</td>
+                                        <td style="font-family:monospace; color:#c0c0e0;">{{ $pt->utr_number ?? '—' }}</td>
+                                        <td>
+                                            @if($pt->proof_screenshot)
+                                            <a href="{{ asset('storage/'.$pt->proof_screenshot) }}" target="_blank"><i class="bi bi-image" style="color:#4cdf80;"></i></a>
+                                            @else —
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($pt->status === 'confirmed')
+                                            <span class="badge" style="background:#4cdf80; color:#000;">Confirmed ✓</span>
+                                            @else
+                                            <span class="badge" style="background:#ff9800; color:#000;">User Pending</span>
+                                            @endif
+                                        </td>
+                                        <td style="color:#7777aa;">{{ $pt->created_at->format('d M, h:i A') }}</td>
+                                    </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                                @endif
+
+                                {{-- New partial upload form --}}
+                                <form method="POST" action="{{ route('admin.withdrawals.upload.partial', $w) }}" enctype="multipart/form-data">
+                                    @csrf
+                                    <div style="border-top: 1px solid #2a2a50; padding-top:14px;">
+                                        <p style="color:#aaa; font-size:.85rem; margin-bottom:12px;"><i class="bi bi-plus-circle me-1" style="color:#ff9800;"></i>Naya partial payment upload karo</p>
+                                        <div class="row g-2 mb-2">
+                                            <div class="col-6">
+                                                <label class="form-label" style="font-size:.82rem;">Amount (₹)</label>
+                                                <input type="number" name="amount" class="form-control" placeholder="e.g. 10000" min="1" required>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label" style="font-size:.82rem;">UTR Number</label>
+                                                <input type="text" name="utr_number" class="form-control" placeholder="UTR / Ref no.">
+                                            </div>
+                                        </div>
+                                        <div class="mb-2">
+                                            <label class="form-label" style="font-size:.82rem;">Payment Screenshot</label>
+                                            <input type="file" name="proof_screenshot" class="form-control" accept="image/*">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" style="font-size:.82rem;">Note (optional)</label>
+                                            <input type="text" name="note" class="form-control" placeholder="e.g. 1st installment">
+                                        </div>
+                                        <button type="submit" class="btn btn-warning w-100"><i class="bi bi-upload me-1"></i>Upload Partial Payment</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Finalize Modal --}}
+                <div class="modal fade" id="finalizeModal{{ $w->id }}" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title"><i class="bi bi-check-circle-fill me-2" style="color:#4cdf80;"></i>Complete Withdrawal #{{ $w->id }}</h5>
+                                <h5 class="modal-title"><i class="bi bi-check-all me-2" style="color:#4cdf80;"></i>Finalize Withdrawal #{{ $w->id }}</h5>
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                             </div>
-                            <form method="POST" action="{{ route('admin.withdrawals.complete', $w) }}" enctype="multipart/form-data">
+                            <form method="POST" action="{{ route('admin.withdrawals.finalize', $w) }}" enctype="multipart/form-data">
                                 @csrf
                                 <div class="modal-body">
-                                    <div style="background:#1a1a38; border-radius:10px; padding:14px; margin-bottom:16px;">
-                                        <div class="d-flex justify-content-between mb-1">
-                                            <span style="color:#7777aa; font-size:.85rem;">User</span>
-                                            <span style="color:#f0f0f0; font-weight:600;">{{ $w->user->name }}</span>
-                                        </div>
-                                        <div class="d-flex justify-content-between mb-1">
-                                            <span style="color:#7777aa; font-size:.85rem;">Amount</span>
-                                            <span style="color:#ff4d4d; font-weight:700;">₹{{ number_format($w->amount, 2) }}</span>
-                                        </div>
-                                        <div class="d-flex justify-content-between">
-                                            <span style="color:#7777aa; font-size:.85rem;">{{ strtoupper($w->method) }}</span>
-                                            <span style="color:#c0c0e0; font-size:.85rem; font-family:monospace;">{{ $w->method === 'upi' ? $w->upi_id : $w->bank_account }}</span>
-                                        </div>
+                                    <div style="background:#0d2a0d; border:1px solid #4cdf80; border-radius:10px; padding:12px; margin-bottom:14px; font-size:.85rem; color:#90ee90;">
+                                        <i class="bi bi-info-circle me-1"></i> Sab partial payments user ne confirm kar diye hain tab hi finalize hoga. Ye withdrawal fully complete ho jaayega.
                                     </div>
-                                    
-                                    <label class="form-label">UTR / Transaction Reference <span style="color:#7777aa;">(optional)</span></label>
-                                    <input type="text" name="utr_number" class="form-control mb-3" placeholder="Enter UTR number...">
-                                    
-                                    <label class="form-label">Receipt / Proof Screenshot <span style="color:#7777aa;">(optional)</span></label>
-                                    <div style="border: 2px dashed #3a3a60; border-radius: 8px; padding: 16px; text-align: center; cursor: pointer;" id="uploadZone{{ $w->id }}">
-                                        <i class="bi bi-cloud-upload" style="font-size: 2rem; color: #ff9800;"></i>
-                                        <p style="color: #c0c0e0; margin-top: 8px;">Click to upload receipt/screenshot</p>
-                                        <input type="file" name="proof_screenshot" accept="image/*" class="form-control" id="proofInput{{ $w->id }}" style="display: none;">
-                                    </div>
-                                    <small style="color: #7777aa;">JPG, PNG, GIF (Max 5MB)</small>
-                                    <div id="fileName{{ $w->id }}" style="color: #4cdf80; margin-top: 8px; display: none;"></div>
+                                    <label class="form-label">Final UTR / Summary Reference <span style="color:#7777aa;">(optional)</span></label>
+                                    <input type="text" name="utr_number" class="form-control mb-3" placeholder="Final UTR or summary note">
+                                    <label class="form-label">Final Summary Screenshot <span style="color:#7777aa;">(optional)</span></label>
+                                    <input type="file" name="proof_screenshot" class="form-control" accept="image/*">
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-success"><i class="bi bi-check-circle me-1"></i>Mark Complete</button>
+                                    <button type="submit" class="btn btn-success"><i class="bi bi-check-all me-1"></i>Mark Fully Complete</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-
-                <script>
-                document.getElementById('uploadZone{{ $w->id }}').addEventListener('click', function() {
-                    document.getElementById('proofInput{{ $w->id }}').click();
-                });
-                document.getElementById('proofInput{{ $w->id }}').addEventListener('change', function(e) {
-                    if (e.target.files.length > 0) {
-                        document.getElementById('fileName{{ $w->id }}').textContent = '✓ ' + e.target.files[0].name;
-                        document.getElementById('fileName{{ $w->id }}').style.display = 'block';
-                    }
-                });
-                </script>
 
                 {{-- Fail Modal --}}
                 <div class="modal fade" id="failModal{{ $w->id }}" tabindex="-1">

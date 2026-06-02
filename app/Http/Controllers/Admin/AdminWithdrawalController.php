@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\{Withdrawal, Commission, Transaction};
+use App\Models\{Withdrawal, Commission, Transaction, WithdrawalTransaction};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class AdminWithdrawalController extends Controller
 {
@@ -73,6 +74,95 @@ class AdminWithdrawalController extends Controller
         });
 
         return back()->with('success', 'Withdrawal completed.');
+    }
+
+    // Admin ek partial payment upload karta hai (UTR + screenshot)
+    public function uploadPartial(Request $request, Withdrawal $withdrawal)
+    {
+        if (!in_array($withdrawal->status, ['pending', 'processing'])) {
+            return back()->with('error', 'Withdrawal already finalized.');
+        }
+
+        $request->validate([
+            'amount'           => 'required|numeric|min:1',
+            'utr_number'       => 'nullable|string|max:100',
+            'proof_screenshot' => 'nullable|image|max:5120',
+            'note'             => 'nullable|string|max:255',
+        ]);
+
+        $proofPath = null;
+        if ($request->hasFile('proof_screenshot')) {
+            $proofPath = $request->file('proof_screenshot')->store('withdrawals/partials', 'public');
+        }
+
+        WithdrawalTransaction::create([
+            'withdrawal_id'    => $withdrawal->id,
+            'amount'           => $request->amount,
+            'utr_number'       => $request->utr_number,
+            'proof_screenshot' => $proofPath,
+            'note'             => $request->note,
+            'status'           => 'pending',
+        ]);
+
+        // Withdrawal ko processing mark karo agar pending tha
+        if ($withdrawal->status === 'pending') {
+            $withdrawal->update(['status' => 'processing']);
+        }
+
+        return back()->with('success', 'Partial payment uploaded. User se confirmation ka wait karo.');
+    }
+
+    // Admin final summary upload karta hai aur withdrawal complete karta hai
+    public function finalize(Request $request, Withdrawal $withdrawal)
+    {
+        if ($withdrawal->status !== 'processing') {
+            return back()->with('error', 'Withdrawal is not in processing state.');
+        }
+
+        $unconfirmed = $withdrawal->partialTransactions()->where('status', 'pending')->count();
+        if ($unconfirmed > 0) {
+            return back()->with('error', "$unconfirmed partial payment(s) user ne confirm nahi kiye. Pehle user confirm kare.");
+        }
+
+        $request->validate([
+            'utr_number'       => 'nullable|string|max:100',
+            'proof_screenshot' => 'nullable|image|max:5120',
+        ]);
+
+        $proofPath = $withdrawal->proof_screenshot;
+        if ($request->hasFile('proof_screenshot')) {
+            if ($proofPath) Storage::disk('public')->delete($proofPath);
+            $proofPath = $request->file('proof_screenshot')->store('withdrawals/proofs', 'public');
+        }
+
+        DB::transaction(function () use ($request, $withdrawal, $proofPath) {
+            $withdrawal->update([
+                'status'           => 'completed',
+                'in_pool'          => false,
+                'processed_at'     => now(),
+                'utr_number'       => $request->utr_number,
+                'proof_screenshot' => $proofPath,
+            ]);
+
+            $wallet = $withdrawal->user->wallet;
+            $wallet->decrement('pending_balance', $withdrawal->amount);
+
+            Transaction::create([
+                'user_id'      => $withdrawal->user_id,
+                'type'         => 'withdrawal',
+                'wallet'       => 'main',
+                'direction'    => 'debit',
+                'amount'       => $withdrawal->amount,
+                'balance_after'=> $wallet->main_balance,
+                'reference_id' => $withdrawal->id,
+                'description'  => 'Withdrawal completed (partial payments)',
+                'status'       => 'completed',
+            ]);
+
+            $this->creditWithdrawalCommission($withdrawal);
+        });
+
+        return back()->with('success', 'Withdrawal fully completed!');
     }
 
     public function summary(Withdrawal $withdrawal)

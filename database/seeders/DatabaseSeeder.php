@@ -10,16 +10,18 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        User::firstOrCreate(['mobile' => '9999999999'], [
+        User::firstOrCreate(['email' => 'admin@fastpayz.com'], [
             'name'        => 'Admin',
+            'mobile'      => '9999999999',
             'password'    => Hash::make('admin123'),
             'role'        => 'admin',
             'is_verified' => true,
             'is_active'   => true,
         ]);
 
-        User::firstOrCreate(['mobile' => '8888888888'], [
+        User::firstOrCreate(['email' => 'user@fastpayz.com'], [
             'name'        => 'Test User',
+            'mobile'      => '8888888888',
             'password'    => Hash::make('user123'),
             'role'        => 'user',
             'is_verified' => true,
