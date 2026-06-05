@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PaymentSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,10 +31,11 @@ class ReferralController extends Controller
             ->sum('commission_amount');
 
         $commissions = $user->commissions()->with('fromUser')->latest()->take(20)->get();
+        $setting = PaymentSetting::get();
 
         return view('referral.index', compact(
             'user', 'referralLink', 'referrals',
-            'totalEarned', 'thisMonthEarned', 'commissions'
+            'totalEarned', 'thisMonthEarned', 'commissions', 'setting'
         ));
     }
 }

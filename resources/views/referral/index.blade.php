@@ -105,6 +105,28 @@
     </div>
 </div>
 
+{{-- Community Links --}}
+@if($setting->whatsapp_link || $setting->telegram_link)
+<div class="card mb-4">
+    <div class="card-header">📣 Join Our Community</div>
+    <div class="card-body">
+        <div style="color:#8888aa; font-size:.85rem; margin-bottom:14px;">Updates, announcements aur support ke liye join karo:</div>
+        <div class="d-flex gap-3 flex-wrap">
+            @if($setting->whatsapp_link)
+            <a href="{{ $setting->whatsapp_link }}" target="_blank" class="btn" style="background:#25D366; color:#fff; font-weight:700; font-size:.9rem; padding:10px 22px;">
+                <i class="bi bi-whatsapp me-2"></i>WhatsApp Channel
+            </a>
+            @endif
+            @if($setting->telegram_link)
+            <a href="{{ $setting->telegram_link }}" target="_blank" class="btn" style="background:#0088cc; color:#fff; font-weight:700; font-size:.9rem; padding:10px 22px;">
+                <i class="bi bi-telegram me-2"></i>Telegram Channel
+            </a>
+            @endif
+        </div>
+    </div>
+</div>
+@endif
+
 {{-- Referred Users List --}}
 <div class="card mb-4">
     <div class="card-header d-flex justify-content-between align-items-center">

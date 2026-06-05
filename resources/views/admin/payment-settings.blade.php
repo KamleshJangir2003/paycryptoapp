@@ -105,6 +105,25 @@
 </div>
 </div>
 
+{{-- Social / Community Links --}}
+<div class="col-12">
+<div class="card">
+    <div class="card-header">📣 Community Links (shown to users)</div>
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-12 col-md-6">
+                <label class="form-label"><i class="bi bi-whatsapp me-1" style="color:#25D366;"></i>WhatsApp Channel Link</label>
+                <input type="url" name="whatsapp_link" class="form-control" placeholder="https://whatsapp.com/channel/..." value="{{ $setting->whatsapp_link }}">
+            </div>
+            <div class="col-12 col-md-6">
+                <label class="form-label"><i class="bi bi-telegram me-1" style="color:#0088cc;"></i>Telegram Channel Link</label>
+                <input type="url" name="telegram_link" class="form-control" placeholder="https://t.me/yourchannel" value="{{ $setting->telegram_link }}">
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
 {{-- Deposit Note --}}
 <div class="col-12">
 <div class="card">
