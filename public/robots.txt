@@ -1,2 +1,12 @@
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /admin/
+Disallow: /dashboard
+Disallow: /deposit/
+Disallow: /withdrawal/
+Disallow: /settings/
+Disallow: /referral/
+Disallow: /report/
+Disallow: /support/
+
+Sitemap: https://fastpayoutx.com/sitemap.xml

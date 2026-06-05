@@ -3,7 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FastpayoutX - Fast & Secure Payments</title>
+
+    <!-- PRIMARY SEO -->
+    <title>FastpayoutX - Fast USDT to INR Payments | Instant Withdrawal India</title>
+    <meta name="description" content="FastpayoutX is India's trusted payment platform. Deposit USDT, withdraw in INR instantly. Earn referral bonuses, track transactions live. Join 10,000+ users today.">
+    <meta name="keywords" content="FastpayoutX, USDT to INR, fast withdrawal, instant payout, crypto to INR, referral earning, UPI withdrawal, online payment platform India">
+    <meta name="author" content="FastpayoutX">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fastpayoutx.com">
+
+    <!-- OPEN GRAPH (WhatsApp, Facebook) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fastpayoutx.com">
+    <meta property="og:title" content="FastpayoutX - Fast USDT to INR Payouts">
+    <meta property="og:description" content="India's fastest payment platform. Deposit USDT, withdraw in INR instantly. 10,000+ active users. Join free today.">
+    <meta property="og:image" content="https://fastpayoutx.com/logonew-removebg-preview.png">
+    <meta property="og:site_name" content="FastpayoutX">
+    <meta property="og:locale" content="en_IN">
+
+    <!-- TWITTER CARD -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="FastpayoutX - Fast USDT to INR Payouts">
+    <meta name="twitter:description" content="Deposit USDT, withdraw in INR instantly. Earn referral bonuses. India's trusted payment platform.">
+    <meta name="twitter:image" content="https://fastpayoutx.com/logonew-removebg-preview.png">
+
+    <!-- JSON-LD STRUCTURED DATA -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FinancialService",
+      "name": "FastpayoutX",
+      "url": "https://fastpayoutx.com",
+      "logo": "https://fastpayoutx.com/logonew-removebg-preview.png",
+      "description": "FastpayoutX is India's trusted USDT to INR payment platform offering instant withdrawals, referral bonuses, and live transaction tracking.",
+      "areaServed": "IN",
+      "serviceType": "Digital Payment Platform"
+    }
+    </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
