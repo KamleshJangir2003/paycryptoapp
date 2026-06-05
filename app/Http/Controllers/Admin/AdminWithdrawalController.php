@@ -228,8 +228,10 @@ class AdminWithdrawalController extends Controller
 
         $rate = 0.5;
         $commissionAmount = round($withdrawal->amount * $rate / 100, 2);
+        if ($commissionAmount <= 0) return;
 
         $referrer->wallet->increment('earnings_balance', $commissionAmount);
+        $referrer->wallet->refresh();
 
         Commission::create([
             'user_id'            => $referrer->id,
@@ -240,6 +242,18 @@ class AdminWithdrawalController extends Controller
             'commission_amount'  => $commissionAmount,
             'reference_id'       => $withdrawal->id,
             'status'             => 'credited',
+        ]);
+
+        Transaction::create([
+            'user_id'      => $referrer->id,
+            'type'         => 'commission',
+            'wallet'       => 'earnings',
+            'direction'    => 'credit',
+            'amount'       => $commissionAmount,
+            'balance_after'=> $referrer->wallet->earnings_balance,
+            'reference_id' => $withdrawal->id,
+            'description'  => 'Referral commission on withdrawal',
+            'status'       => 'completed',
         ]);
     }
 }
