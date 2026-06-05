@@ -27,7 +27,13 @@
                     {{-- Row 1: amount + status --}}
                     @php $confirmedTotal = $w->partialTransactions->where('status','confirmed')->sum('amount'); @endphp
                     <div class="wh-row1">
-                        <div class="wh-amount">₹{{ number_format($w->amount - $confirmedTotal, 2) }} <span style="font-size:.7rem;color:#555588;font-weight:400;">/ ₹{{ number_format($w->amount,2) }}</span></div>
+                        <div class="wh-amount">
+                            @if($w->status === 'completed')
+                                ₹{{ number_format($w->amount, 2) }}
+                            @else
+                                ₹{{ number_format($w->amount - $confirmedTotal, 2) }} <span style="font-size:.7rem;color:#555588;font-weight:400;">/ ₹{{ number_format($w->amount,2) }}</span>
+                            @endif
+                        </div>
                         <span class="wh-badge {{ $w->status }}">
                             @if($w->status==='pending') <i class="bi bi-hourglass-split"></i> Pending
                             @elseif($w->status==='processing') <i class="bi bi-arrow-repeat spin"></i> Processing
@@ -51,7 +57,16 @@
 
                     {{-- Partial transactions --}}
                     @if(in_array($w->status, ['processing','completed']) && $w->partialTransactions->count())
-                    <div class="wh-partials">
+                    <div class="wh-partials {{ $w->status === 'completed' ? 'wh-partials-collapsed' : '' }}" id="partials-{{ $w->id }}">
+                        @if($w->status === 'completed')
+                        <div class="wh-partials-toggle" onclick="togglePartials({{ $w->id }})">
+                            <i class="bi bi-list-ul"></i> Payment Breakdown
+                            <i class="bi bi-chevron-down ms-auto" id="chevron-{{ $w->id }}"></i>
+                        </div>
+                        @else
+                        <div class="wh-partials-label"><i class="bi bi-list-ul"></i> Payment Breakdown</div>
+                        @endif
+                    <div class="wh-partials-body" id="partials-body-{{ $w->id }}" style="{{ $w->status === 'completed' ? 'display:none;' : '' }}">
                         <div class="wh-partials-label"><i class="bi bi-list-ul"></i> Payment Breakdown</div>
 
                         @foreach($w->partialTransactions->sortBy('created_at') as $i => $pt)
@@ -107,6 +122,7 @@
                             @if($w->utr_number) &nbsp;·&nbsp; Ref: {{ $w->utr_number }} @endif
                         </div>
                         @endif
+                    </div>
                     </div>
                     @endif
 
@@ -204,6 +220,8 @@
 .pt-progress-bar { background:#1a1a30; border-radius:4px; height:4px; }
 .pt-progress-bar div { background:linear-gradient(90deg,#4cdf80,#26a17b); height:4px; border-radius:4px; transition:width .5s; }
 .pt-complete-banner { margin-top:8px; background:#0d1f0d; border:1px solid #4cdf8050; border-radius:6px; padding:7px 10px; font-size:.75rem; color:#4cdf80; display:flex; align-items:center; gap:4px; flex-wrap:wrap; }
+.wh-partials-toggle { font-size:.72rem; color:#4cdf80; text-transform:uppercase; letter-spacing:.5px; cursor:pointer; display:flex; align-items:center; gap:5px; padding:2px 0; }
+.wh-partials-toggle:hover { color:#80ffb4; }
 
 /* ── Empty ── */
 .wd-empty { text-align:center; padding:40px 20px; color:#3a3a5a; }
@@ -259,5 +277,13 @@
     }
     setInterval(fetchPool, 4000);
 })();
+
+function togglePartials(id) {
+    const body = document.getElementById('partials-body-' + id);
+    const chevron = document.getElementById('chevron-' + id);
+    const hidden = body.style.display === 'none';
+    body.style.display = hidden ? 'block' : 'none';
+    chevron.className = hidden ? 'bi bi-chevron-up ms-auto' : 'bi bi-chevron-down ms-auto';
+}
 </script>
 @endsection
