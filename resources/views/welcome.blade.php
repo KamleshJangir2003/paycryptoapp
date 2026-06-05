@@ -185,6 +185,23 @@
         }
         .btn-hero-secondary:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
 
+        .app-btns {
+            display: flex; justify-content: center;
+            margin-top: 20px;
+            animation: fadeInUp 0.8s ease 1s both;
+        }
+        .app-btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
+            color: var(--text); text-decoration: none;
+            padding: 12px 24px; border-radius: 10px;
+            transition: all 0.3s; white-space: nowrap;
+        }
+        .app-btn:hover { background: rgba(245,166,35,0.1); border-color: rgba(245,166,35,0.4); color: var(--text); transform: translateY(-2px); }
+        .app-btn-text { display: flex; flex-direction: column; line-height: 1.2; }
+        .app-btn-text span { font-size: .7rem; color: var(--text-muted); }
+        .app-btn-text strong { font-size: .95rem; font-weight: 700; }
+
         /* Stats bar */
         .stats-bar {
             display: flex; justify-content: center; gap: 48px; flex-wrap: wrap;
@@ -615,6 +632,15 @@
             @if(Route::has('login'))
                 <a href="{{ route('login') }}" class="btn-hero btn-hero-secondary">Login to Dashboard</a>
             @endif
+        </div>
+        <div class="app-btns">
+            <a href="/fastpayz.apk" download class="app-btn">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-6-6h4V4h4v6h4l-6 6zm-7 2h14v2H5v-2z"/></svg>
+                <div class="app-btn-text">
+                    <span>Download our App</span>
+                    <strong>Download APK</strong>
+                </div>
+            </a>
         </div>
         <div class="stats-bar">
             <div class="stat">
