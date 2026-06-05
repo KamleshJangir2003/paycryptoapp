@@ -76,7 +76,7 @@
                                 <form method="POST" action="{{ route('withdrawal.partial.confirm', $pt) }}" class="m-0">
                                     @csrf
                                     <button type="submit" class="pt-confirm-btn">
-                                        <i class="bi bi-check-lg"></i> Mila? Confirm
+                                        <i class="bi bi-check-lg"></i> Received ✓
                                     </button>
                                 </form>
                                 @else

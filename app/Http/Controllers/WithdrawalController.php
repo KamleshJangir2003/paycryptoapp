@@ -122,10 +122,15 @@ class WithdrawalController extends Controller
             return back()->with('error', 'Already confirmed.');
         }
 
-        $partialTransaction->update([
-            'status'       => 'confirmed',
-            'confirmed_at' => now(),
-        ]);
+        DB::transaction(function () use ($partialTransaction, $withdrawal) {
+            $partialTransaction->update([
+                'status'       => 'confirmed',
+                'confirmed_at' => now(),
+            ]);
+
+            $wallet = $withdrawal->user->wallet;
+            $wallet->decrement('pending_balance', $partialTransaction->amount);
+        });
 
         return back()->with('success', 'Payment confirmed!');
     }

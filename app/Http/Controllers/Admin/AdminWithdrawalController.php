@@ -136,6 +136,10 @@ class AdminWithdrawalController extends Controller
         }
 
         DB::transaction(function () use ($request, $withdrawal, $proofPath) {
+            $withdrawal->load('partialTransactions');
+            $alreadyDeducted = $withdrawal->partialTransactions->where('status', 'confirmed')->sum('amount');
+            $remaining = max(0, $withdrawal->amount - $alreadyDeducted);
+
             $withdrawal->update([
                 'status'           => 'completed',
                 'in_pool'          => false,
@@ -145,7 +149,9 @@ class AdminWithdrawalController extends Controller
             ]);
 
             $wallet = $withdrawal->user->wallet;
-            $wallet->decrement('pending_balance', $withdrawal->amount);
+            if ($remaining > 0) {
+                $wallet->decrement('pending_balance', $remaining);
+            }
 
             Transaction::create([
                 'user_id'      => $withdrawal->user_id,
