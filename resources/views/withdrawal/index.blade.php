@@ -6,7 +6,7 @@
 
     {{-- Top bar --}}
     <div class="wd-topbar">
-        <span class="wd-sub">Aapke sabhi withdrawal transactions</span>
+        <span class="wd-sub">withdrawal transactions</span>
         <a href="{{ route('withdrawal.create') }}" class="wd-btn-new">
             <i class="bi bi-plus-lg"></i> New Withdrawal
         </a>
@@ -25,8 +25,9 @@
                 <div class="wh-item {{ $w->status }}">
 
                     {{-- Row 1: amount + status --}}
+                    @php $confirmedTotal = $w->partialTransactions->where('status','confirmed')->sum('amount'); @endphp
                     <div class="wh-row1">
-                        <div class="wh-amount">₹{{ number_format($w->amount, 2) }}</div>
+                        <div class="wh-amount">₹{{ number_format($w->amount - $confirmedTotal, 2) }} <span style="font-size:.7rem;color:#555588;font-weight:400;">/ ₹{{ number_format($w->amount,2) }}</span></div>
                         <span class="wh-badge {{ $w->status }}">
                             @if($w->status==='pending') <i class="bi bi-hourglass-split"></i> Pending
                             @elseif($w->status==='processing') <i class="bi bi-arrow-repeat spin"></i> Processing
@@ -94,7 +95,7 @@
                         <div class="pt-progress-wrap">
                             <div class="pt-progress-labels">
                                 <span>Received ₹{{ number_format($confirmedAmt, 2) }}</span>
-                                <span>{{ $pct }}% of ₹{{ number_format($w->amount, 2) }}</span>
+                                <span style="color:#ff9800;">Pending ₹{{ number_format($w->amount - $confirmedAmt, 2) }}</span>
                             </div>
                             <div class="pt-progress-bar"><div style="width:{{ $pct }}%;"></div></div>
                         </div>

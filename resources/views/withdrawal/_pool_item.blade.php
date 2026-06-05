@@ -1,6 +1,7 @@
 <div class="pi-wrap">
+    @php $piConf = $p->partialTransactions->where('status','confirmed')->sum('amount'); @endphp
     <div class="pi-top">
-        <span class="pi-amount">₹{{ number_format($p->amount, 2) }}</span>
+        <span class="pi-amount">₹{{ number_format($p->amount - $piConf, 2) }} <span style="font-size:.65rem;color:#555588;font-weight:400;">/ ₹{{ number_format($p->amount,2) }}</span></span>
         @if($p->status === 'pending')
             <span class="pi-badge-p"><i class="bi bi-hourglass-split me-1"></i>Pending</span>
         @else
@@ -39,7 +40,7 @@
         <div class="pi-progress">
             <div class="pi-progress-label">
                 <span>₹{{ number_format($conf,2) }} received</span>
-                <span>{{ $pct }}%</span>
+                <span style="color:#ff9800;">₹{{ number_format($p->amount - $conf, 2) }} pending</span>
             </div>
             <div class="pi-progress-bar"><div style="width:{{ $pct }}%;"></div></div>
         </div>
