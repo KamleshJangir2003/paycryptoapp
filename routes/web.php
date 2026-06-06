@@ -30,6 +30,10 @@ Route::middleware('guest')->group(function () {
     Route::post('/register/complete', [AuthController::class, 'completeRegister'])->name('register.complete.post');
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+    Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.forgot');
+    Route::post('/forgot-password', [AuthController::class, 'sendResetOtp'])->name('password.forgot.send');
+    Route::get('/reset-password', [AuthController::class, 'showResetPassword'])->name('password.reset.form');
+    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.reset');
 });
 
 // Admin guest routes (separate - admin guard check)

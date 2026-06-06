@@ -94,6 +94,42 @@ class AuthController extends Controller
 
     public function showLogin() { return view('auth.login'); }
 
+    public function showForgotPassword() { return view('auth.forgot-password'); }
+
+    public function sendResetOtp(Request $request)
+    {
+        $request->validate(['email' => 'required|email|exists:users,email']);
+        $otp = rand(100000, 999999);
+        session(['reset_email' => $request->email, 'reset_otp' => $otp, 'reset_otp_expires' => now()->addMinutes(10)]);
+        Mail::to($request->email)->send(new OtpMail($otp));
+        return redirect()->route('password.reset.form');
+    }
+
+    public function showResetPassword()
+    {
+        if (!session('reset_email')) return redirect()->route('password.forgot');
+        return view('auth.reset-password');
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'otp'      => 'required|digits:6',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        if (session('reset_otp') != $request->otp || now()->gt(session('reset_otp_expires'))) {
+            return back()->withErrors(['otp' => 'Invalid or expired OTP']);
+        }
+
+        User::where('email', session('reset_email'))->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        session()->forget(['reset_email', 'reset_otp', 'reset_otp_expires']);
+        return redirect()->route('login')->with('success', 'Password reset successfully! Please login.');
+    }
+
     public function login(Request $request)
     {
         $request->validate(['email' => 'required|email', 'password' => 'required']);
