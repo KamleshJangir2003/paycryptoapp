@@ -57,7 +57,7 @@
             <div class="card-body text-center">
                 @if($payment->qr_image)
                 <div class="mb-3">
-                    <img src="{{ asset('storage/'.$payment->qr_image) }}"
+                    <img src="{{ asset('storage/'.$payment->qr_image) }}?v={{ $payment->updated_at->timestamp }}"
                         style="width:190px;height:190px;object-fit:contain;background:#0d0d1a;border:2px solid #2a2a50;border-radius:14px;padding:10px;">
                 </div>
                 @endif
@@ -88,7 +88,7 @@
             <div class="card-body text-center">
                 @if($payment->wallet_qr)
                 <div class="mb-3">
-                    <img src="{{ asset('storage/'.$payment->wallet_qr) }}"
+                    <img src="{{ asset('storage/'.$payment->wallet_qr) }}?v={{ $payment->updated_at->timestamp }}"
                         style="width:190px;height:190px;object-fit:contain;background:#0d0d1a;border:2px solid #26a17b44;border-radius:14px;padding:10px;">
                 </div>
                 @endif

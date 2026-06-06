@@ -39,7 +39,7 @@
         <div class="text-center mt-3">
             @if($setting->qr_image)
                 <div style="color:#8888aa; font-size:.8rem; margin-bottom:8px;">Current QR Code</div>
-                <img id="upiPreview" src="{{ asset('storage/'.$setting->qr_image) }}"
+                <img id="upiPreview" src="{{ asset('storage/'.$setting->qr_image) }}?v={{ $setting->updated_at->timestamp }}"
                     style="width:180px; height:180px; object-fit:contain; background:#0a0a14; border:2px solid #2a2a50; border-radius:12px; padding:8px;">
             @else
                 <div id="upiPreviewWrap" style="width:180px; height:180px; background:#0a0a14; border:2px dashed #3a3a60; border-radius:12px; display:flex; align-items:center; justify-content:center; margin:0 auto;">
@@ -88,7 +88,7 @@
         <div class="text-center mt-3">
             @if($setting->wallet_qr)
                 <div style="color:#8888aa; font-size:.8rem; margin-bottom:8px;">Current Wallet QR</div>
-                <img id="walletPreview" src="{{ asset('storage/'.$setting->wallet_qr) }}"
+                <img id="walletPreview" src="{{ asset('storage/'.$setting->wallet_qr) }}?v={{ $setting->updated_at->timestamp }}"
                     style="width:180px; height:180px; object-fit:contain; background:#0a0a14; border:2px solid #2a2a50; border-radius:12px; padding:8px;">
             @else
                 <div id="walletPreviewWrap" style="width:180px; height:180px; background:#0a0a14; border:2px dashed #3a3a60; border-radius:12px; display:flex; align-items:center; justify-content:center; margin:0 auto;">
