@@ -24,6 +24,11 @@
         a:hover { color: #d4920a; }
         .divider { border-color: #2a2a50; margin: 20px 0; }
         .step-badge { background: #f0a500; color: #000; border-radius: 50%; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: .85rem; margin-right: 8px; }
+        .app-download { background: #0d0d1a; border: 1px solid #2a2a50; border-radius: 14px; padding: 16px; margin-top: 20px; text-align: center; }
+        .app-download p { color: #7777aa; font-size: .8rem; margin-bottom: 10px; }
+        .app-btn { display: inline-flex; align-items: center; gap: 6px; background: #1a1a35; border: 1px solid #3a3a60; border-radius: 8px; padding: 5px 12px; color: #c0c0e0; text-decoration: none; font-size: .78rem; transition: border-color .2s; }
+        .app-btn:hover { border-color: #f0a500; color: #f0a500; text-decoration: none; }
+        .app-btn i { font-size: .95rem; }
     </style>
 </head>
 <body>
@@ -60,6 +65,13 @@
         <p class="text-center mb-0" style="color:#7777aa; font-size:.9rem;">
             Already have an account? <a href="{{ route('login') }}">Login here</a>
         </p>
+
+        <div class="app-download">
+            <p><i class="bi bi-phone"></i> Download Our App</p>
+            <div class="d-flex justify-content-center gap-2 flex-wrap">
+                <a href="{{ asset('app.apk') }}" class="app-btn" download><i class="bi bi-download"></i> Download APK</a>
+            </div>
+        </div>
     </div>
 </div>
 </body>

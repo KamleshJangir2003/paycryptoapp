@@ -198,3 +198,19 @@
 </div>
 
 @endsection
+
+@if(session('show_app_download'))
+<div id="apkModal" style="position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;">
+    <div style="background:#13132b;border:1px solid #2a2a50;border-radius:20px;padding:32px 28px;max-width:360px;width:100%;text-align:center;">
+        <div style="font-size:2.5rem;margin-bottom:12px;">📱</div>
+        <div style="font-size:1.2rem;font-weight:800;color:#f0a500;margin-bottom:6px;">Download Our App</div>
+        <div style="color:#7777aa;font-size:.85rem;margin-bottom:24px;">Get the best experience on our mobile app!</div>
+        <a href="{{ asset('app.apk') }}" download class="btn btn-primary mb-3" style="width:100%;">
+            <i class="bi bi-download me-2"></i>Download APK
+        </a>
+        <div>
+            <button onclick="document.getElementById('apkModal').remove()" style="background:none;border:none;color:#5a5a80;font-size:.85rem;cursor:pointer;">Maybe Later</button>
+        </div>
+    </div>
+</div>
+@endif
