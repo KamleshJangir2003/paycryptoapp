@@ -145,6 +145,42 @@ class AuthController extends Controller
 
     public function showAdminLogin() { return view('auth.admin-login'); }
 
+    public function showAdminForgotPassword() { return view('auth.admin-forgot-password'); }
+
+    public function sendAdminResetOtp(Request $request)
+    {
+        $request->validate(['email' => 'required|email|exists:admins,email']);
+        $otp = rand(100000, 999999);
+        session(['admin_reset_email' => $request->email, 'admin_reset_otp' => $otp, 'admin_reset_otp_expires' => now()->addMinutes(10)]);
+        Mail::to($request->email)->send(new OtpMail($otp));
+        return redirect()->route('admin.password.reset.form');
+    }
+
+    public function showAdminResetPassword()
+    {
+        if (!session('admin_reset_email')) return redirect()->route('admin.password.forgot');
+        return view('auth.admin-reset-password');
+    }
+
+    public function resetAdminPassword(Request $request)
+    {
+        $request->validate([
+            'otp'      => 'required|digits:6',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        if (session('admin_reset_otp') != $request->otp || now()->gt(session('admin_reset_otp_expires'))) {
+            return back()->withErrors(['otp' => 'Invalid or expired OTP']);
+        }
+
+        \App\Models\Admin::where('email', session('admin_reset_email'))->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        session()->forget(['admin_reset_email', 'admin_reset_otp', 'admin_reset_otp_expires']);
+        return redirect()->route('admin.login')->with('success', 'Password reset successfully! Please login.');
+    }
+
     public function adminLogin(Request $request)
     {
         $request->validate(['email' => 'required|email', 'password' => 'required']);

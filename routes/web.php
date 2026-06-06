@@ -40,6 +40,10 @@ Route::middleware('guest')->group(function () {
 Route::middleware('guest:admin')->group(function () {
     Route::get('/admin/login', [AuthController::class, 'showAdminLogin'])->name('admin.login');
     Route::post('/admin/login', [AuthController::class, 'adminLogin'])->name('admin.login.post');
+    Route::get('/admin/forgot-password', [AuthController::class, 'showAdminForgotPassword'])->name('admin.password.forgot');
+    Route::post('/admin/forgot-password', [AuthController::class, 'sendAdminResetOtp'])->name('admin.password.forgot.send');
+    Route::get('/admin/reset-password', [AuthController::class, 'showAdminResetPassword'])->name('admin.password.reset.form');
+    Route::post('/admin/reset-password', [AuthController::class, 'resetAdminPassword'])->name('admin.password.reset');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
