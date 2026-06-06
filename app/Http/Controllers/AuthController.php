@@ -89,7 +89,7 @@ class AuthController extends Controller
 
         session()->forget(['reg_email', 'reg_otp', 'otp_expires', 'otp_verified', 'reg_ref']);
         Auth::login($user);
-        return redirect()->route('dashboard')->with('show_app_download', true);
+        return redirect()->route('app.download');
     }
 
     public function showLogin() { return view('auth.login'); }

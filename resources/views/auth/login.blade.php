@@ -26,11 +26,12 @@
         a { color: #f0a500; text-decoration: none; }
         a:hover { color: #d4920a; text-decoration: underline; }
         .divider { border-color: #2a2a50; margin: 20px 0; }
-        .app-download { background: #0d0d1a; border: 1px solid #2a2a50; border-radius: 14px; padding: 16px; margin-top: 20px; text-align: center; }
+        .app-download { display: none; background: #0d0d1a; border: 1px solid #2a2a50; border-radius: 14px; padding: 16px; margin-top: 20px; text-align: center; }
         .app-download p { color: #7777aa; font-size: .8rem; margin-bottom: 10px; }
         .app-btn { display: inline-flex; align-items: center; gap: 6px; background: #1a1a35; border: 1px solid #3a3a60; border-radius: 8px; padding: 5px 12px; color: #c0c0e0; text-decoration: none; font-size: .78rem; transition: border-color .2s; }
         .app-btn:hover { border-color: #f0a500; color: #f0a500; text-decoration: none; }
         .app-btn i { font-size: .95rem; }
+        @media (max-width: 768px) { .app-download { display: block; } }
     </style>
 </head>
 <body>

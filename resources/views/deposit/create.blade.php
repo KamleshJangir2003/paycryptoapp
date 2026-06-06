@@ -17,7 +17,7 @@
         <div style="color:#5a8a70;font-size:.72rem;font-weight:600;text-transform:uppercase;">Current USDT Rate</div>
         <div style="font-size:1rem;font-weight:800;"><span style="color:#26a17b;">1 USDT</span> <span style="color:#5a5a80;">=</span> <span style="color:#f0a500;">₹{{ number_format($usdtRate, 2) }}</span></div>
     </div>
-    <div class="ms-auto" style="color:#5a5a80;font-size:.75rem;">Admin controlled</div>
+
 </div>
 
 <div class="row justify-content-center">

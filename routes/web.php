@@ -48,6 +48,7 @@ Route::middleware('guest:admin')->group(function () {
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 Route::post('/admin/logout', [AuthController::class, 'adminLogout'])->name('admin.logout')->middleware('auth:admin');
+Route::get('/download-app', fn() => view('auth.download'))->name('app.download')->middleware('auth');
 
 // User Routes
 Route::middleware(['auth', 'deposit.check'])->group(function () {
