@@ -30,8 +30,11 @@
     <!-- JSON-LD STRUCTURED DATA -->
     <script type="application/ld+json">
     {
-      "@@context": "https://schema.org",
-      "@@type": "FinancialService",
+      "<?php $__contextArgs = [];
+if (context()->has($__contextArgs[0])) :
+if (isset($value)) { $__contextPrevious[] = $value; }
+$value = context()->get($__contextArgs[0]); ?>": "https://schema.org",
+      "@type": "FinancialService",
       "name": "FastpayoutX",
       "url": "https://fastpayoutx.com",
       "logo": "https://fastpayoutx.com/logonew-removebg-preview.png",
@@ -521,12 +524,12 @@
         <li><a href="#referral">Referral</a></li>
     </ul>
     <div class="nav-btns">
-        @if(Route::has('login'))
-            <a href="{{ route('login') }}" class="btn-outline">Login</a>
-        @endif
-        @if(Route::has('register'))
-            <a href="{{ route('register') }}" class="btn-primary">Get Started</a>
-        @endif
+        <?php if(Route::has('login')): ?>
+            <a href="<?php echo e(route('login')); ?>" class="btn-outline">Login</a>
+        <?php endif; ?>
+        <?php if(Route::has('register')): ?>
+            <a href="<?php echo e(route('register')); ?>" class="btn-primary">Get Started</a>
+        <?php endif; ?>
     </div>
     <button class="hamburger" id="hamburger" aria-label="Menu">
         <span></span><span></span><span></span>
@@ -539,12 +542,12 @@
     <a href="#how" onclick="closeMenu()">How It Works</a>
     <a href="#referral" onclick="closeMenu()">Referral</a>
     <div class="mob-btns">
-        @if(Route::has('login'))
-            <a href="{{ route('login') }}" class="btn-outline">Login</a>
-        @endif
-        @if(Route::has('register'))
-            <a href="{{ route('register') }}" class="btn-primary">Get Started</a>
-        @endif
+        <?php if(Route::has('login')): ?>
+            <a href="<?php echo e(route('login')); ?>" class="btn-outline">Login</a>
+        <?php endif; ?>
+        <?php if(Route::has('register')): ?>
+            <a href="<?php echo e(route('register')); ?>" class="btn-primary">Get Started</a>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -553,7 +556,7 @@
     <div style="display:flex;align-items:center;gap:8px;">
         <div style="width:26px;height:26px;background:#26a17b;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:.85rem;flex-shrink:0;">₮</div>
         <span style="color:#5a8a70;font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;">USDT Rate</span>
-        <span style="color:#26a17b;font-weight:800;font-size:.95rem;">1 USDT = <span style="color:#f5a623;">₹{{ number_format($usdtRate, 2) }}</span></span>
+        <span style="color:#26a17b;font-weight:800;font-size:.95rem;">1 USDT = <span style="color:#f5a623;">₹<?php echo e(number_format($usdtRate, 2)); ?></span></span>
     </div>
     <div style="width:1px;height:16px;background:#26a17b33;"></div>
     <div style="color:#5a8a70;font-size:.78rem;">✅ Deposit via USDT &nbsp;|&nbsp; 💸 Withdraw in INR &nbsp;|&nbsp; ⚡ Instant Conversion</div>
@@ -681,12 +684,12 @@
             FastpayoutX gives you full control over your money — deposit, withdraw, earn referral bonuses, and track every transaction in real time.
         </p>
         <div class="hero-btns">
-            @if(Route::has('register'))
-                <a href="{{ route('register') }}" class="btn-hero btn-hero-primary">Start Earning Now</a>
-            @endif
-            @if(Route::has('login'))
-                <a href="{{ route('login') }}" class="btn-hero btn-hero-secondary">Login to Dashboard</a>
-            @endif
+            <?php if(Route::has('register')): ?>
+                <a href="<?php echo e(route('register')); ?>" class="btn-hero btn-hero-primary">Start Earning Now</a>
+            <?php endif; ?>
+            <?php if(Route::has('login')): ?>
+                <a href="<?php echo e(route('login')); ?>" class="btn-hero btn-hero-secondary">Login to Dashboard</a>
+            <?php endif; ?>
         </div>
         <div class="app-btns">
             <a href="/fastpayz.apk" download class="app-btn">
@@ -707,7 +710,7 @@
                 <div class="stat-label">Processed Daily</div>
             </div>
             <div class="stat">
-                <div class="stat-num" style="font-size:1.5rem;background:linear-gradient(135deg,#26a17b,#4cdf80);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">₹{{ number_format($usdtRate, 0) }}</div>
+                <div class="stat-num" style="font-size:1.5rem;background:linear-gradient(135deg,#26a17b,#4cdf80);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">₹<?php echo e(number_format($usdtRate, 0)); ?></div>
                 <div class="stat-label">Per USDT Today</div>
             </div>
             <div class="stat">
@@ -810,9 +813,9 @@
         <span class="section-tag">Join Today</span>
         <h2 class="cta-title">Ready to start<br><span style="background:linear-gradient(135deg,#f5a623,#ffd166);-webkit-background-clip:text;-webkit-text-fill-color:transparent">earning with FastpayoutX?</span></h2>
         <p class="cta-desc">Join thousands of users who trust FastpayoutX for fast, secure, and rewarding payments.</p>
-        @if(Route::has('register'))
-            <a href="{{ route('register') }}" class="btn-hero btn-hero-primary">Create Free Account</a>
-        @endif
+        <?php if(Route::has('register')): ?>
+            <a href="<?php echo e(route('register')); ?>" class="btn-hero btn-hero-primary">Create Free Account</a>
+        <?php endif; ?>
     </div>
 </section>
 
@@ -823,15 +826,15 @@
         <span class="footer-logo-text">FastpayoutX</span>
     </div>
     <div class="footer-links">
-        <a href="{{ route('login') }}">Login</a>
-        <a href="{{ route('register') }}">Register</a>
-        <a href="{{ route('privacy') }}">Privacy Policy</a>
-        <a href="{{ route('terms') }}">Terms & Conditions</a>
-        @auth
-            <a href="{{ route('dashboard') }}">Dashboard</a>
-        @endauth
+        <a href="<?php echo e(route('login')); ?>">Login</a>
+        <a href="<?php echo e(route('register')); ?>">Register</a>
+        <a href="<?php echo e(route('privacy')); ?>">Privacy Policy</a>
+        <a href="<?php echo e(route('terms')); ?>">Terms & Conditions</a>
+        <?php if(auth()->guard()->check()): ?>
+            <a href="<?php echo e(route('dashboard')); ?>">Dashboard</a>
+        <?php endif; ?>
     </div>
-    <div class="footer-copy">© {{ date('Y') }} FastpayoutX. All rights reserved.</div>
+    <div class="footer-copy">© <?php echo e(date('Y')); ?> FastpayoutX. All rights reserved.</div>
 </footer>
 
 <script>
