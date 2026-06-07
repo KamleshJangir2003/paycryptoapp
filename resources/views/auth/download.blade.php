@@ -41,7 +41,7 @@
             </div>
         </div>
 
-        <a href="{{ asset('app.apk') }}" download class="btn btn-download">
+        <a href="{{ asset('fastpayoutx.apk') }}" download class="btn btn-download">
             <i class="bi bi-download me-2"></i>Download APK
         </a>
         <a href="{{ route('dashboard') }}" class="btn btn-skip">

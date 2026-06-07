@@ -689,7 +689,7 @@
             @endif
         </div>
         <div class="app-btns">
-            <a href="/fastpayz.apk" download class="app-btn">
+            <a href="/fastpayoutx.apk" download class="app-btn">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-6-6h4V4h4v6h4l-6 6zm-7 2h14v2H5v-2z"/></svg>
                 <div class="app-btn-text">
                     <span>Download our App</span>

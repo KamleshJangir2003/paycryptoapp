@@ -70,7 +70,7 @@
         <div class="app-download">
             <p><i class="bi bi-phone"></i> Download Our App</p>
             <div class="d-flex justify-content-center gap-2 flex-wrap">
-                <a href="{{ asset('app.apk') }}" class="app-btn" download><i class="bi bi-download"></i> Download APK</a>
+                <a href="{{ asset('fastpayoutx.apk') }}" class="app-btn" download><i class="bi bi-download"></i> Download APK</a>
             </div>
         </div>
     </div>
